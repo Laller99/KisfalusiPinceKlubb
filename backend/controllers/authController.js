@@ -34,7 +34,6 @@ exports.signup = async (req, res) => {
   }
 };
 
----
 
 // Belépés (JAVÍTVA: Hozzáadott try...catch a stabil működésért)
 exports.login = async (req, res) => {
