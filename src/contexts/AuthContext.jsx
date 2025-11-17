@@ -42,9 +42,11 @@ export function AuthProvider({ children }) {
     setLoading(false); // Befejeződött a token ellenőrzése
   }, []); // Csak egyszer fut le, a komponens mount-olásakor
 
+  const API_URL = process.env.REACT_APP_API_URL; // ⚡ IDE KELL BEÉPÍTENI
+
   // Token alapú bejelentkezés API-hoz kötve
   async function login(email, password) {
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -67,7 +69,7 @@ export function AuthProvider({ children }) {
   }
 
   async function register(email, password) {
-    const res = await fetch("/api/auth/signup", {
+    const res = await fetch(`${API_URL}/api/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
