@@ -411,7 +411,7 @@ const WineStore = () => {
   const [cart, setCart] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(AuthContext); // 🔑 HELYESEN HASZNÁLVA
-  const API_URL = "http://localhost:3001"; // Fő Backend URL (feltételezve)
+  const API_URL = "https://kisfalusipinceklubb.onrender.com"; // Fő Backend URL (feltételezve)
 
   // 1. Termékek betöltése a Backendről
   useEffect(() => {

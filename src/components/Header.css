@@ -1,165 +1,176 @@
-/* A felhasználó által megadott HEADER */
+/* Header.css - FRISSÍTETT VÁLTOZAT a kért logómérettel és pozícióval */
+
+/* --- ALAP STÍLUSOK (Mobil-first / Minden méretre) --- */
+
 .header {
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* Fontos: transparent, hogy látszódjon a HERO háttér */
-  background: transparent;
-  z-index: 700; /* Magasabb, mint a tartalom és a levelek, de alacsonyabb, mint az intro */
-  transition: background 0.4s;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Stílus hozzáadva: Fejléc sötétítése görgetéskor (JS-t igényelne, de CSS-ben legyen alap) */
-.scrolled {
-  background: rgba(43, 27, 27, 0.95); /* Mélybarna áttetsző */
-}
-
-.logo {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  background-color: #070707;
-  border-radius: 50%;
-  border: 3px solid rgb(112, 99, 27);
-}
-
+/* KÉRT LOGÓ MÉRET ÉS STÍLUS */
 .logo img {
-  width: 100%;
-  height: 100%;
+  height: 90px; /* KÉRT MÉRET */
+  width: auto;
+  object-fit: contain;
+  margin-top: -10%;
+  margin-left: -15%;
 }
 
-.nav a {
-  color: rgb(112, 99, 27);
-  text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 800;
-  transition: color 0.3s;
-  font-size: 20px;
+/* ------------------------------------- */
+/* 🍔 MOBIL NÉZET ALAPÉRTELMEZÉSEK */
+/* ------------------------------------- */
+
+.nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 5%;
+  width: 90%;
+  background-color: #050303;
+  flex-direction: column;
+  z-index: 999;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.nav a:hover {
-  color: #d4b68a;
+.nav.mobile-open {
+  display: flex;
 }
 
-/* --------------------------------------------------------------------- */
-/* --- ÚJ STÍLUS: LOGIN GOMB --- */
-/* --------------------------------------------------------------------- */
-
+/* NAVIGÁCIÓS LINKEK ÉS GOMBOK STÍLUSA MOBILON (változatlan) */
+.nav a,
 .nav button {
-  /* Alap kinézet reset */
+  padding: 1rem 1.5rem;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  color: #eee9e9;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.nav a:hover,
+.nav button:hover {
+  background-color: #0c0a0a;
+  border-radius: 20px;
+}
+
+/* A hamburger gomb (finomabb animációval) */
+.hamburger-toggle {
+  display: flex; /* Emiatt látszik mobilon */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
   background: transparent;
   border: none;
   cursor: pointer;
-
-  /* Aranyozott gomb design */
-  color: rgb(112, 99, 27); /* Alap szövegszín */
-  font-weight: 800;
-  font-size: 20px;
-  margin-left: 1.5rem; /* Térköz a navigációs linkektől */
-  padding: 0.5rem 1rem;
-
-  /* Arany keret és átmenet */
-  border: 2px solid rgb(112, 99, 27);
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  padding: 0;
+  z-index: 1000;
+  margin-top: 6px;
+  /* Mivel a .header justify-content: space-between, ez a jobb sarokban lesz */
 }
 
-.nav button:hover {
-  /* Hover állapot */
-  background-color: rgb(112, 99, 27); /* Arany/sárgás háttér */
-  color: #070707; /* Fekete szöveg */
-  border-color: #d4b68a; /* Enyhe kiemelés a kereten */
+.hamburger-toggle span {
+  width: 100%;
+  height: 3px;
+  background: #f3efef;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+  transform-origin: 1px;
 }
 
-/* Ha a gombot jobban el szeretnénk választani */
-.nav button:not(:first-child) {
-  margin-left: 2rem;
-} /* ------------------------------------------- */
-/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 900px) */
-/* ------------------------------------------- */
-@media (max-width: 900px) {
-  /* --- FEJLÉC ÉS ELRENDEZÉS --- */
+/* Hamburger nyitott állapot: X-é alakulás (változatlan) */
+.hamburger-toggle.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 6px);
+}
+
+.hamburger-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-toggle.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
+
+/* ------------------------------------- */
+/* 💻 ASZTALI NÉZET (@media query: min-width: 768px) */
+/* ------------------------------------- */
+
+@media (min-width: 768px) {
+  /* 1. Hamburger gomb elrejtése */
+  .hamburger-toggle {
+    display: none;
+  }
+
+  /* 2. Header finomhangolása asztalon (ha szükséges) */
   .header {
-    padding: 1rem 2rem; /* Csökkentjük az oldalsó paddingot */
+    background-color: rgba(255, 255, 255, 0); /* Félátlátszó fehér */
   }
 
-  /* --- LOGO --- */
-  .logo {
-    width: 80px; /* Kisebb logó tableten */
-    height: 80px;
-  }
-
-  /* --- NAVIGÁCIÓ (Linkek és gomb) --- */
-  .nav a,
-  .nav button {
-    font-size: 18px; /* Kissé kisebb betűméret */
-    margin-left: 1rem; /* Csökkentjük a linkek közti távolságot */
-  }
-
-  .nav button:not(:first-child) {
-    margin-left: 1.5rem; /* A gomb elválasztása is kissé kisebb */
-  }
-} /* ------------------------------------------- */
-/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 600px) */
-/* ------------------------------------------- */
-@media (max-width: 600px) {
-  /* --- FEJLÉC ÉS ELRENDEZÉS --- */
-  .header {
-    display: flex;
-    flex-direction: row; /* mindig vízszintes */
-    justify-content: space-between;
-    align-items: center;
-
-    position: fixed; /* mindig látható a képernyő tetején */
-    top: 0;
-    left: 0;
-    width: 100%; /* teljes szélesség */
-    height: 9%;
-    padding: 10px 15px; /* opcionális háttér, hogy ne tűnjön el */
-    backdrop-filter: blur(2px); /* extra igényesség */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  /* --- LOGO --- */
-  .logo {
-    width: 60px; /* Még kisebb logó mobilon */
-    height: 40px;
-    margin-bottom: 0.5rem; /* Elválasztás a nav-tól */
-  }
-
-  /* --- NAVIGÁCIÓ (Linkek és gomb) --- */
+  /* 3. Navigáció megjelenítése (horizontális) */
   .nav {
-    /* Navigáció flexibilis konténerként, középre rendezve */
     display: flex;
-    flex-wrap: wrap; /* Hogy a linkek szükség esetén betörjenek a következő sorba */
-    justify-content: center;
+    position: static;
+    flex-direction: row;
     align-items: center;
-    padding-bottom: 0.5rem; /* Alulra adunk paddingot */
+    width: auto;
+    box-shadow: none;
+    background-color: transparent;
   }
 
+  /* NAVIGÁCIÓS LINKEK ÉS GOMBOK STÍLUSA ASZTALIN (változatlan) */
   .nav a,
   .nav button {
-    font-size: 16px; /* A legkisebb olvasható méret */
-    margin: 0.1rem 0.2rem; /* Kisebb belső és külső térköz */
-    padding: 0.1rem 0.4rem;
+    padding: 0 0.8rem;
+    width: auto;
+    text-align: center;
+    border-bottom: none;
+    color: #f1ecec;
+    font-weight: 600;
+    position: relative;
   }
 
-  .nav a {
-    margin-left: 0.5rem; /* Egységes térköz */
+  /* Aláhúzás effekt hozzáadása (opcionális, de szép) - változatlan */
+  .nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #a00000;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
   }
 
-  .nav button {
-    /* Gomb stílusa mobilra: nagyobb padding, hogy könnyű legyen kattintani */
+  .nav a:hover::after {
+    width: 80%;
+  }
+
+  /* A bejelentkező gomb kiemelése - változatlan */
+  .nav button:not(.MuiButtonBase-root) {
     padding: 0.5rem 1rem;
+    margin-left: 1rem;
+    background-color: #6d0404;
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s;
   }
 
-  /* Ezt felülírjuk az egységes térközért */
-  .nav button:not(:first-child) {
-    margin-left: 0.5rem;
+  .nav button:hover:not(.MuiButtonBase-root) {
+    background-color: #f30a0a;
   }
 }
