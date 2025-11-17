@@ -1,0 +1,170 @@
+/* A felhasználó által megadott HEADER */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Fontos: transparent, hogy látszódjon a HERO háttér */
+  background: transparent;
+  z-index: 700; /* Magasabb, mint a tartalom és a levelek, de alacsonyabb, mint az intro */
+  transition: background 0.4s;
+}
+
+/* Stílus hozzáadva: Fejléc sötétítése görgetéskor (JS-t igényelne, de CSS-ben legyen alap) */
+.scrolled {
+  background: rgba(43, 27, 27, 0.95); /* Mélybarna áttetsző */
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  background-color: #070707;
+  border-radius: 50%;
+  border: 3px solid rgb(112, 99, 27);
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+}
+
+.nav a {
+  color: rgb(112, 99, 27);
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 800;
+  transition: color 0.3s;
+  font-size: 20px;
+}
+
+.nav a:hover {
+  color: #d4b68a;
+}
+
+/* --------------------------------------------------------------------- */
+/* --- ÚJ STÍLUS: LOGIN GOMB --- */
+/* --------------------------------------------------------------------- */
+
+.nav button {
+  /* Alap kinézet reset */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  /* Aranyozott gomb design */
+  color: rgb(112, 99, 27); /* Alap szövegszín */
+  font-weight: 800;
+  font-size: 20px;
+  margin-left: 1.5rem; /* Térköz a navigációs linkektől */
+  padding: 0.5rem 1rem;
+
+  /* Arany keret és átmenet */
+  border: 2px solid rgb(112, 99, 27);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.nav button:hover {
+  /* Hover állapot */
+  background-color: rgb(112, 99, 27); /* Arany/sárgás háttér */
+  color: #070707; /* Fekete szöveg */
+  border-color: #d4b68a; /* Enyhe kiemelés a kereten */
+}
+
+/* Ha a gombot jobban el szeretnénk választani */
+.nav button:not(:first-child) {
+  margin-left: 2rem;
+} /* ------------------------------------------- */
+/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 900px) */
+/* ------------------------------------------- */
+@media (max-width: 900px) {
+  /* --- FEJLÉC ÉS ELRENDEZÉS --- */
+  .header {
+    padding: 1rem 2rem; /* Csökkentjük az oldalsó paddingot */
+  }
+
+  /* --- LOGO --- */
+  .logo {
+    width: 80px; /* Kisebb logó tableten */
+    height: 80px;
+  }
+
+  /* --- NAVIGÁCIÓ (Linkek és gomb) --- */
+  .nav a,
+  .nav button {
+    font-size: 18px; /* Kissé kisebb betűméret */
+    margin-left: 1rem; /* Csökkentjük a linkek közti távolságot */
+  }
+
+  .nav button:not(:first-child) {
+    margin-left: 1.5rem; /* A gomb elválasztása is kissé kisebb */
+  }
+} /* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 600px) */
+/* ------------------------------------------- */
+@media (max-width: 600px) {
+  /* --- FEJLÉC ÉS ELRENDEZÉS --- */
+  .header {
+    display: flex;
+    flex-direction: row; /* mindig vízszintes */
+    justify-content: space-between;
+    align-items: center;
+
+    position: fixed; /* mindig látható a képernyő tetején */
+    top: 0;
+    left: 0;
+    width: 100%; /* teljes szélesség */
+
+    padding: 10px 15px;
+   
+
+     /* opcionális háttér, hogy ne tűnjön el */
+    backdrop-filter: blur(5px); /* extra igényesség */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  
+
+  /* --- LOGO --- */
+  .logo {
+    width: 70px; /* Még kisebb logó mobilon */
+    height: 50px;
+    margin-bottom: 0.5rem; /* Elválasztás a nav-tól */
+  }
+
+  /* --- NAVIGÁCIÓ (Linkek és gomb) --- */
+  .nav {
+    /* Navigáció flexibilis konténerként, középre rendezve */
+    display: flex;
+    flex-wrap: wrap; /* Hogy a linkek szükség esetén betörjenek a következő sorba */
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 0.5rem; /* Alulra adunk paddingot */
+  }
+
+  .nav a,
+  .nav button {
+    font-size: 16px; /* A legkisebb olvasható méret */
+    margin: 0.25rem 0.5rem; /* Kisebb belső és külső térköz */
+    padding: 0.4rem 0.8rem;
+  }
+
+  .nav a {
+    margin-left: 0.5rem; /* Egységes térköz */
+  }
+
+  .nav button {
+    /* Gomb stílusa mobilra: nagyobb padding, hogy könnyű legyen kattintani */
+    padding: 0.5rem 1rem;
+  }
+
+  /* Ezt felülírjuk az egységes térközért */
+  .nav button:not(:first-child) {
+    margin-left: 0.5rem;
+  }
+}

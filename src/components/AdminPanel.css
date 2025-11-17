@@ -1,0 +1,433 @@
+/* --- AdminPanel.css - Látványos, Modern Stílus --- */
+
+/* ------------------------------------------- */
+/* 1. ALAP ELRENDEZÉS ÉS OVERLAY */
+/* ------------------------------------------- */
+
+.admin-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Mélyebb, áttetsző fekete háttér */
+    background-color: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; 
+    
+    backdrop-filter: blur(8px); 
+}
+
+/* ------------------------------------------- */
+/* 2. ADMIN PANEL KÁRTYA ÉS FŐ ELEMEK */
+/* ------------------------------------------- */
+
+.admin-card {
+    /* 🔑 Javítva: Enyhe gradient a kártya alapjának */
+    background: linear-gradient(145deg, #ffffff, #f0f0f0); 
+    border-radius: 16px; /* Lekerekítettebb sarkok */
+    padding: 30px;
+    width: 95%;
+    max-width: 1200px; /* Megnövelt méret */
+    max-height: 90vh;
+    overflow-y: auto;
+    /* 🔑 Javítva: Látványos, puha árnyék */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); 
+    position: relative;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.3s ease;
+}
+
+.admin-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 32px;
+    cursor: pointer;
+    /* Elegánsabb sötét barna */
+    color: #4e342e; 
+    transition: color 0.2s;
+}
+
+.admin-close:hover {
+    color: #e57373; /* Törlés szín, ha felette van az egér */
+}
+
+.admin-card h2 {
+    /* Sötét barna cím */
+    color: #4e342e; 
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+
+/* ------------------------------------------- */
+/* 3. NAVIGÁCIÓS GOMBOK */
+/* ------------------------------------------- */
+
+.admin-nav button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 12px 20px;
+    margin-right: 8px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.3s ease;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); /* Enyhe árnyék alulról */
+}
+
+.admin-nav button:hover:not(.active) {
+    background-color: #e0e0ee;
+    color: #333;
+}
+
+.admin-nav button.active {
+    background-color: #fff;
+    color: #4e342e; /* Aktív szín */
+    border-bottom-color: #fff;
+    /* Erősebb kiemelés az aktív fülön */
+    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.1); 
+}
+
+/* Termék/Rendelés nézet tartalom */
+.view-content {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+    border-radius: 0 8px 8px 8px;
+    margin-top: -1px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03); /* Enyhe belső árnyék */
+}
+
+/* ------------------------------------------- */
+/* 4. TÁBLÁZAT STÍLUSA */
+/* ------------------------------------------- */
+
+.view-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden; /* Fontos az egységes keretekhez */
+}
+
+.view-content th, .view-content td {
+    /* Eltávolítva a sötét, vastag vonalak */
+    border: none; 
+    padding: 15px 12px;
+    text-align: left;
+    font-size: 15px; /* Jobb olvashatóság */
+}
+
+.view-content th {
+    /* Sötét, elegáns fejléc */
+    background-color: #4e342e; 
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Pántos sorok (zebra-csíkos effektus) */
+.view-content tr:nth-child(even) {
+    background-color: #fafafa;
+}
+/* Hover effektus */
+.view-content tr:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Akció gombok és select mezők */
+.view-content td button, .view-content td select {
+    padding: 8px 12px;
+    margin: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    cursor: pointer;
+    /* Enyhén világosabb barna a háttérhez */
+    background-color: #6d4c41; 
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.view-content td button:hover, .view-content td select:hover {
+    background-color: #4e342e;
+    transform: translateY(-1px);
+}
+
+.view-content td button.delete {
+    background-color: #e57373; /* Világos piros */
+}
+.view-content td button.delete:hover {
+    background-color: #d32f2f; /* Sötét piros */
+}
+
+/* Új termék gomb */
+.product-management > button:not(.edit-btn) {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-management > button:not(.edit-btn):hover {
+    background-color: #43a047;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ------------------------------------------- */
+/* 5. MODÁL (TERMÉK FORMA) */
+/* ------------------------------------------- */
+
+.product-modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Még erősebb blur a modál alatt */
+    background-color: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2001;
+}
+
+.product-modal-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px; /* Kissé megnövelt méret */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.product-modal-card h3 {
+    color: #4e342e;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.product-modal-card input, .product-modal-card textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.product-modal-card input:focus, .product-modal-card textarea:focus {
+    border-color: #6d4c41;
+    box-shadow: 0 0 5px rgba(109, 76, 65, 0.3);
+    outline: none;
+}
+
+.product-modal-card button {
+    /* Azonos stílus az admin panel gombokkal */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.product-modal-card button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.product-modal-card button[type="submit"]:hover {
+    background-color: #43a047;
+}
+
+.product-modal-card button[type="button"] { /* Mégse gomb */
+    background-color: #ccc;
+    color: #333;
+}
+
+.product-modal-card button[type="button"]:hover {
+    background-color: #bbb;
+}/* ------------------------------------------- */
+/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 1024px) */
+/* ------------------------------------------- */
+
+@media (max-width: 1024px) {
+    /* --- ADMIN PANEL KÁRTYA --- */
+    .admin-card {
+        padding: 25px;
+        max-width: 90%; /* Kissé kisebb maximális szélesség */
+    }
+
+    /* --- BEZÁRÁS GOMB --- */
+    .admin-close {
+        top: 15px;
+        right: 20px;
+        font-size: 28px;
+    }
+
+    /* --- CÍMEK --- */
+    .admin-card h2 {
+        font-size: 1.8em;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+
+    /* --- NAVIGÁCIÓS GOMBOK --- */
+    .admin-nav button {
+        padding: 10px 15px;
+        margin-right: 6px;
+        font-size: 0.95em;
+    }
+
+    /* --- TÁBLÁZAT STÍLUSA (KONTÉNER) --- */
+    /* Vízszintes görgetés engedélyezése a túl nagy táblázatokhoz */
+    .view-content {
+        overflow-x: auto; 
+    }
+    
+    .view-content table {
+        /* Fix minimum szélesség, hogy a tartalom ne torzuljon */
+        min-width: 800px; 
+    }
+
+    .view-content th, .view-content td {
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+    
+    /* Új termék gomb */
+    .product-management > button:not(.edit-btn) {
+        padding: 10px 15px;
+    }
+
+    /* --- TERMÉK MODÁL --- */
+    .product-modal-card {
+        max-width: 450px;
+        padding: 25px;
+    }
+}/* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 600px) */
+/* ------------------------------------------- */
+
+@media (max-width: 600px) {
+    /* --- ADMIN PANEL KÁRTYA --- */
+    .admin-card {
+        padding: 15px;
+        max-width: 95%;
+        border-radius: 12px;
+        /* Görgetés engedélyezése az admin panel kártyán belül, ha a tartalom magas */
+        max-height: 95vh;
+        
+    }
+
+    /* --- BEZÁRÁS GOMB --- */
+    .admin-close {
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+    }
+
+    /* --- CÍMEK --- */
+    .admin-card h2 {
+        font-size: 1.5em;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    /* --- NAVIGÁCIÓS GOMBOK --- */
+    .admin-nav {
+        /* Flexbox a gombokhoz, hogy szükség esetén betörjenek a következő sorba */
+        display: flex;
+        flex-wrap: wrap; 
+        margin-bottom: 5px;
+    }
+    
+    .admin-nav button {
+        padding: 8px 10px;
+        margin-right: 5px;
+        margin-bottom: 5px; /* Térköz, ha betör a következő sorba */
+        font-size: 0.85em;
+        border-radius: 6px 6px 0 0;
+    }
+    
+    /* Tartalom alatti padding csökkentése */
+    .view-content {
+        padding: 15px;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    /* --- TÁBLÁZAT STÍLUSA --- */
+    /* A görgetés kritikus: a min-width biztosítja, hogy a táblázat ne torzuljon. */
+    .view-content table {
+        min-width: 650px; 
+    }
+    
+    .view-content th, .view-content td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+
+    /* Akció gombok és select mezők */
+    .view-content td button, .view-content td select {
+        padding: 6px 8px;
+        margin: 2px;
+        font-size: 0.8em;
+    }
+    
+    /* Új termék gomb */
+    .product-management > button:not(.edit-btn) {
+        width: 100%; /* Mobil nézetben teljes szélesség */
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    /* --- TERMÉK MODÁL --- */
+    .product-modal-bg {
+        padding: 10px;
+    }
+    
+    .product-modal-card {
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .product-modal-card h3 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .product-modal-card input, .product-modal-card textarea {
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .product-modal-card button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}

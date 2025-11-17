@@ -1,0 +1,567 @@
+:root {
+  /* Színpaletta (a képek alapján és arany kiemeléssel) */
+  --dark-background: #1a1a1a;
+  --card-background: #fff;
+  --text-light: #f5f5f5;
+  --text-dark: #333;
+  --accent-gold: #ffc107; /* Az arany gomb színe */
+  --accent-red: #8b0000; /* Boros bordó */
+  --shadow-dark: rgba(0, 0, 0, 0.4);
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--dark-background);
+  color: var(--text-light);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* --- Általános szekció stílusok --- */
+.section {
+  padding: 80px 5%;
+  text-align: center;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5em;
+  color: var(--text-light);
+  margin-bottom: 50px;
+  border-bottom: 2px solid var(--accent-red);
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+/* --- Gomb stílusok (Arany CTA) --- */
+.cta-button {
+  background-color: var(--accent-gold);
+  color: var(--dark-background);
+  font-weight: 700;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 15px var(--shadow-dark);
+  text-decoration: none;
+}
+
+.cta-button:hover {
+  background-color: #ffda6a;
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------- */
+/* --- 1. Díjnyertes Borok Szekció --- */
+/* -------------------------------------- */
+/* --- Globális változók feltételezve (példa) --- */
+:root {
+  --color-base-dark: #121212;
+  --color-card-dark: #1e1e1e;
+  --color-text-light: #f0f0f0;
+  --color-accent-gold: #ffc107;
+  --shadow-dark: rgba(0, 0, 0, 0.6);
+}
+
+/* --- 1. Szekció Konténer --- */
+.award-wines {
+  background-color: var(--color-base-dark); /* Mély sötét háttér */
+  padding: 80px 20px;
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+.award-wines h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5em;
+  color: var(--color-accent-gold); /* Arany színű cím */
+  margin-bottom: 50px;
+  text-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+}
+
+/* --- 2. Grid Elrendezés (Az elrendezés osztályát a JSX-hez igazítjuk) --- */
+.wine-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  height: 100%; /* Reszponzivitás miatt */
+}
+
+/* --- 3. Bor Kártya Stílus (Közös stílus) --- */
+.wine-card {
+  background: var(--color-card-dark); /* Sötét kártya háttér */
+  width: 30%;
+  height: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px var(--shadow-dark); /* Mély sötét árnyék */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Finom keret */
+}
+
+.wine-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(255, 193, 7, 0.2); /* Arany glória hoverre */
+  border: 1px solid var(--color-accent-gold);
+}
+
+/* --- Kép (Borosüveg) Stílusa --- */
+.wine-card img {
+  width: 400px; /* Megfelelő méretű üveg */
+  height: 600px;
+  margin: 0 auto 15px auto;
+  display: block;
+  /* Extra kiemelés a sötét háttéren */
+  filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.5));
+  transition: transform 0.3s ease;
+}
+span {
+  background-color: rgba(30, 30, 30, 0.7);
+  border-radius: 5px;
+}
+.wine-card:hover img {
+  transform: scale(1.05);
+}
+
+/* --- Szöveg Stílusok --- */
+.wine-card h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: var(--color-accent-gold); /* ARANY CÍM */
+}
+
+.wine-card p {
+  color: var(--color-text-light); /* Fehér leírás */
+  font-size: 1.2em;
+  font-style: italic;
+  line-height: 1.4;
+  min-height: 60px; /* Hogy a rövid leírások ne rántsák össze a kártyákat */
+}
+
+/* --- EGYEDI HÁTTÉREK (A képeken látható elválasztó színek imitálása) --- */
+/* Ezt a CSS-t akkor tudod használni, ha adsz egyedi osztályt az egyes kártyáknak: 
+   Pl.: <div className="wine-card wine-szurke-alkony">...</div> 
+*/
+
+.wine-szurke-alkony::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #f0e68c 0%,
+    transparent 60%
+  ); /* Halvány sárga aura */
+  opacity: 0.15;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.wine-demon-ver::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #8b0000 0%,
+    transparent 60%
+  ); /* Mély vörös aura */
+  opacity: 0.2;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.wine-eszak-szive::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #90ee90 0%,
+    transparent 60%
+  ); /* Halvány zöld aura */
+  opacity: 0.15;
+  z-index: 1;
+  pointer-events: none;
+}
+/* Borok.css */
+
+/* 1. KONTÉNER: A TERMÉKLISTÁT ÖSSZEFOGÓ RÁCS (SECTION) */
+.wine-list-grid {
+  display: grid;
+  padding: 30px 20px;
+
+  /* 🔑 KULCS: Reszponzív Grid Beállítás
+       - auto-fit: Annyi oszlopot hoz létre, amennyi elfér.
+       - minmax(280px, 1fr): Minden oszlop MINIMÁLISAN 280px széles, de egyenlően tölti ki a teret. */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px; /* Térközök az elemek között */
+
+  /* Középre igazítás és maximális szélesség */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* 2. EGYEDI KÁRTYA: WineListCard (DIV .wine-cards) */
+.wine-cards {
+  /* Fontos, hogy a Grid-ből örökölje a méretet */
+  width: 100%;
+  height: 100%;
+  display: flex; /* Flexbox-ot használunk az elemek elrendezéséhez a kártyán belül */
+  flex-direction: column;
+  justify-content: space-between; /* A lábléc (gombok) lemennek az aljára */
+
+  /* Standard stílusok */
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.wine-cards:hover {
+  transform: translateY(-5px);
+}
+
+/* 3. KÉP MÉRETEZÉSE */
+.wine-cards .wine-image-container {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.wine-cards .wine-image {
+  max-width: 100%; /* A kép soha ne nyúljon túl a szülőn */
+  height: auto;
+  /* Állíts be egy fix arányt, ha a képek nem egyforma méretűek */
+  /* Például: 4:3 arány */
+  /* aspect-ratio: 4 / 3; 
+    object-fit: cover; */
+  border-radius: 8px;
+}
+
+/* 4. AKCIÓS SZEKCIÓ */
+.card-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+} /* ------------------------------------------- */
+/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 1024px) */
+/* ------------------------------------------- */
+
+@media (max-width: 1024px) {
+  /* --- ÁLTALÁNOS SZEKCIÓK --- */
+  .section {
+    padding: 60px 4%;
+  }
+
+  .section-title {
+    font-size: 2.2em;
+    margin-bottom: 40px;
+  }
+
+  /* --- DÍJNYERTES BOROK (AWARD WINES) --- */
+  .award-wines {
+    padding: 60px 20px;
+  }
+
+  .award-wines h2 {
+    font-size: 2.2em;
+  }
+
+  /* Grid: 33%-ról nagyobb méretre váltunk (2 oszlopra törés) */
+  .wine-grid {
+    gap: 20px;
+    /* Általában két oszlop 1024px alatt */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .wine-card {
+    width: 100%; /* Hagyjuk, hogy a grid határozza meg a méretet */
+    /* Nincs fix méret, hogy a tartalomhoz igazodjon */
+    height: auto;
+  }
+
+  /* Kép (Borosüveg) Stílusa */
+  .wine-card img {
+    width: 100%; /* A kártya szélességéhez igazítva */
+    max-width: 300px; /* De korlátozva, hogy ne legyen túl nagy */
+    height: auto;
+  }
+
+  /* Szöveg Stílusok */
+  .wine-card p {
+    font-size: 1.1em;
+    min-height: 50px;
+  }
+
+  /* --- TERMÉKLISTA GRID (WINE LIST GRID) --- */
+  .wine-list-grid {
+    /* A minmax(280px, 1fr) még mindig jól működik, csak a padding csökken */
+    padding: 20px 15px;
+    gap: 30px;
+  }
+} /* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 650px) */
+/* ------------------------------------------- */
+
+@media (max-width: 650px) {
+  /* --- ÁLTALÁNOS SZEKCIÓK --- */
+  .section {
+    padding: 40px 3%;
+  }
+
+  .section-title {
+    font-size: 2em;
+    margin-bottom: 30px;
+  }
+
+  /* --- GOMBOK --- */
+  .cta-button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+
+  /* --- DÍJNYERTES BOROK (AWARD WINES) --- */
+  .award-wines {
+    padding: 40px 10px;
+  }
+
+  .award-wines h2 {
+    font-size: 1.8em;
+  }
+
+  /* Grid: Egyetlen oszlop mobilra */
+  .wine-grid {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+  }
+
+  .wine-card {
+    padding: 15px;
+  }
+
+  /* Kép (Borosüveg) Stílusa */
+  .wine-card img {
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  /* Szöveg Stílusok */
+  .wine-card h3 {
+    font-size: 1.3em;
+  }
+
+  .wine-card p {
+    font-size: 1em;
+    min-height: auto; /* Töröljük a fix magasságot */
+  }
+} /* ============================================================
+   MOBIL NÉZET (Max 650px)
+   ============================================================ */
+@media (max-width: 650px) {
+  /* ----------------------------- */
+  /* 🛒 ALAP LAYOUT (egy oszlop) */
+  /* ----------------------------- */
+  .wine-shop-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  /* ----------------------------- */
+  /* 🛒 KOSÁR BLOKK */
+  /* ----------------------------- */
+  .kosar {
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  /* ============================================================
+     🍷 TERMÉKLISTA – HORIZONTÁLIS GÖRGETÉS MOBILON
+     ============================================================ */
+  .wine-list-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    gap: 16px;
+
+    width: 100%;
+    padding: 10px 5px;
+    box-sizing: border-box;
+
+    scroll-snap-type: x mandatory; /* Szép „snap” effekt */
+  }
+
+  .wine-list-grid::-webkit-scrollbar {
+    height: 6px; /* Vékony scrollbar mobilon */
+  }
+
+  .wine-list-grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+
+  /* ----------------------------- */
+  /* 📦 TERMÉK KÁRTYÁK */
+  /* ----------------------------- */
+  .wine-cards {
+    min-width: 240px; /* Mobil „slider” méret */
+    max-width: 260px;
+    scroll-snap-align: start;
+
+    padding: 12px;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background: #fff;
+  }
+
+  /* ----------------------------- */
+  /* GOMBOK, MŰVELETEK */
+  /* ----------------------------- */
+  .card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quantity-input {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ----------------------------- */
+  /* AURÁK (háttér animációk finomítva) */
+  /* ----------------------------- */
+  .wine-szurke-alkony::before,
+  .wine-demon-ver::before,
+  .wine-eszak-szive::before {
+    opacity: 0.15;
+  }
+
+  /* ----------------------------- */
+  /* MODAL (rendelési űrlap) */
+  /* ----------------------------- */
+  .modal-content {
+    width: 85%;
+    right: 4%;
+    margin: 0;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .form-group-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Rendelési összefoglaló táblázat */
+  .order-summary-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .order-summary-table thead,
+  .order-summary-table tbody {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .order-form input[type="text"],
+  .order-form input[type="email"],
+  .order-form input[type="tel"],
+  .order-form select {
+    padding: 8px;
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   TABLET (Max 1100px) – Finomhangolás
+   ============================================================ */
+@media (max-width: 1100px) {
+  .wine-shop-layout {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .kosar {
+    width: 60%;
+    margin: 10px auto;
+  }
+
+  .card-actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .modal-content {
+    max-width: 95%;
+  }
+
+  .form-group-grid {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* ----------------------------- */
+/* MODAL (rendelési űrlap) */
+/* ----------------------------- */
+.modal-content {
+  width: 75%;
+  /* keskenyebb, biztosan látszik minden */
+  max-width: 360px; /* túl nagy kijelzőn se nőjön túl */
+  margin: 0 auto; /* KÖZÉPRE helyezés */
+  left: 45%; /* pozíció fixálása */
+  transform: translateX(-50%);
+  position: fixed;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  /* hogy ne csússzon el */
+  top: 15%; /* egy kis felső margó */
+}
+
+/* Bezáró ikon mindig a helyén legyen */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px; /* biztosan elérhető */
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 9999;
+}

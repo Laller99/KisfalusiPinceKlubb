@@ -1,0 +1,173 @@
+/* --- FOOTER --- */
+.footer {
+  background: #2b1b1b;
+  color: #faf7f3;
+  padding: 3rem 5%;
+  display: grid;
+  /* Mobil nézetnél kezdjük egy oszloppal, és a médiakérésben térünk át a 3 oszlopra */
+  grid-template-columns: 1fr; /* Mobil nézet alapértelmezett */
+  align-items: start;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.footer-left {
+  /* Az ikonok és linkek szekcióhoz igazítva */
+  padding-top: 0.5rem;
+}
+
+.footer-logo {
+  width: 200px;
+}
+.footer-logo img {
+  width: 100%;
+}
+
+.footer-center a {
+  display: flex;
+  align-items: center;
+  color: #faf7f3;
+  text-decoration: none;
+  margin: 2rem 0;
+  transition: color 0.3s;
+}
+
+.footer-center a:hover {
+  color: #d4b68a;
+}
+
+/* Navigációs ikonok térköze */
+.footer-center a svg {
+  margin-right: 0.6rem;
+}
+
+/* Közösségi ikonok konténerének beállítása */
+.socials {
+  display: flex;
+  gap: 3.5rem;
+  padding-top: 0.5rem;
+}
+
+/* Közösségi Ikonok (SVG, amit a react-icons renderel) */
+.socials a svg {
+  /* Alapértelmezett szín beállítása fehérre */
+  color: #e9e6e3;
+  transition: color 0.3s, filter 0.3s;
+}
+
+.socials a:hover svg {
+  color: #140e07;
+  filter: drop-shadow(0 0 10px rgb(238, 180, 6)); /* Lágy fényhatás */
+}
+
+.footer-bottom {
+  /* Media Query-vel kezelve, hogy mobilon is teljes szélességű legyen */
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 1rem;
+}
+/* ------------------------------------------- */
+/* 1. TABLET ÉS KISEBB ASZTALI GÉPEK (Max Szélesség: 900px) */
+/* ------------------------------------------- */
+@media (max-width: 900px) {
+    /* --- LÁBLÉC FŐ KONTÉNER --- */
+    .footer {
+        padding: 2.5rem 4%; /* Kicsit kisebb külső térköz */
+        gap: 1.5rem;
+    }
+
+    /* Asztali/Nagyobb tablet nézetben 3 oszlopról 2 oszlopra váltunk, ha van rá lehetőség
+       Megjegyzés: A @media (min-width: 768px) beállításod már 3 oszlopot ad, 
+                   így itt a 900px alatti tartományban a 3 oszlopot tarthatjuk, 
+                   de jobban igazítjuk a tartalmat, ha szükséges, vagy hagyjuk, hogy betörjön 
+                   a 768px-es beállításod miatt 3 oszlopban maradjon.
+    */
+    @media (min-width: 768px) {
+        /* A lábléc a 768px és 900px között is 3 oszlopban marad, csak a padding csökken */
+        .footer {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* --- LOGO --- */
+    .footer-logo {
+        width: 150px; /* Kisebb logó */
+    }
+
+    /* --- KÖZÉPSŐ SZEKCIÓ (Linkek) --- */
+    .footer-center a {
+        margin: 1.5rem 0; /* Kisebb térköz a linkek között */
+    }
+
+    /* --- KÖZÖSSÉGI IKONOK --- */
+    .socials {
+        gap: 2.5rem; /* Kisebb távolság az ikonok között */
+    }
+}
+
+/* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 767px) */
+/* ------------------------------------------- */
+@media (max-width: 767px) {
+    /* --- LÁBLÉC FŐ KONTÉNER --- */
+    .footer {
+        /* Visszatér a mobil alapértelmezettre (1 oszlop) */
+        grid-template-columns: 1fr;
+        padding: 2rem 5%;
+        gap: 3rem; /* Nagyobb függőleges távolság a szekciók között */
+        text-align: center; /* Minden középre igazítva */
+    }
+
+    /* --- FOOTER BAL (Logo és Ikonok) --- */
+    .footer-left {
+        padding-top: 0;
+        /* Mobil nézetben a logó és a socials konténer */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .footer-logo {
+        width: 180px; /* Megtartjuk a jó méretet */
+        margin-bottom: 2rem;
+    }
+
+    /* --- FOOTER KÖZÉP (Navigációs Linkek) --- */
+    .footer-center {
+        /* Középső szekció text-align: center miatt középen van,
+           de a linkeket függőlegesen igazítjuk */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-center a {
+        /* Átváltunk blokkra, de középre igazítjuk */
+        justify-content: center;
+        margin: 0.8rem 0;
+    }
+
+    /* --- KÖZÖSSÉGI IKONOK --- */
+    .socials {
+        /* Középre igazítjuk az ikonsávot is */
+        justify-content: center;
+        gap: 2rem;
+        padding-top: 0;
+        width: 100%;
+    }
+
+    /* --- COPYRIGHT (ALSÓ SÁV) --- */
+    .footer-bottom {
+        grid-column: 1 / 1; /* Egy oszlop, de ez már az alapértelmezett */
+        margin-top: 1rem;
+        padding-top: 0.8rem;
+    }
+}

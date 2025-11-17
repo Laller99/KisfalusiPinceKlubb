@@ -1,0 +1,152 @@
+/* --- HAMBURGER IKON --- */
+.hamburger-menu .icon {
+  /* Alap kinézet reset */
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Kicsit nagyobb térköz */
+  padding: 8px;
+  /* Fontos: A gombot külön kell stílusozni a Header.jsx-ben lévő nav a/button stílusok miatt, 
+     de itt csak az ikon belső részét stílusozzuk. */
+}
+
+.hamburger-menu .icon span {
+  display: block;
+  width: 30px; /* Kicsit szélesebb */
+  height: 3px;
+  /* Arany szín a sötét háttérhez */
+  background: rgb(112, 99, 27);
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+
+/* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  /* Mélybarna háttér */
+  background: #2b1b1b;
+  /* Arany/fehér árnyék */
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 10px rgba(212, 182, 138, 0.2);
+  border-radius: 7px;
+  min-width: 200px; /* Kicsit szélesebb */
+  z-index: 1200;
+  border: 1px solid #70631b; /* Arany szegély */
+  overflow: hidden; /* Lekerekítés miatt */
+}
+
+/* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
+.item,
+.logout {
+  padding: 12px 16px; /* Kicsit nagyobb padding */
+  cursor: pointer;
+  color: #faf7f3; /* Világos krémszín a szövegnek */
+  transition: background 0.3s, color 0.3s;
+  text-decoration: none; /* Biztos, ami biztos */
+  display: block; /* Biztosítja, hogy az egész sáv kattintható */
+}
+
+/* --- HOVER EFFEKT --- */
+.item:hover,
+.logout:hover {
+  /* Halvány arany/mélybarna hover szín */
+  background: #70631b;
+  color: #faf7f3;
+}
+
+/* --- FELHASZNÁLÓ EMAIL --- */
+.user-email {
+  font-size: 0.85em;
+  /* Halvány arany szín */
+  color: #d4b68a;
+  padding: 10px 16px 8px; /* Padding igazítása */
+  border-bottom: 1px solid rgba(212, 182, 138, 0.2); /* Vékony elválasztó */
+  text-align: center;
+}
+
+/* --- LOGOUT GOMB --- */
+.logout {
+  /* Kiemelt piros szín helyett marad a krémszín, de megőrizzük a súlyozást */
+  color: #faf7f3;
+  font-weight: 600;
+  border-top: 1px solid rgba(212, 182, 138, 0.2); /* Vékony elválasztó */
+}
+
+.logout:hover {
+  background: #a33b3b; /* Hoverre pirosas háttér a kilépés kiemelésére */
+  color: #fff;
+}
+/* ------------------------------------------- */
+/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 900px) */
+/* ------------------------------------------- */
+
+@media (max-width: 900px) {
+    /* --- HAMBURGER IKON --- */
+    .hamburger-menu .icon {
+        padding: 6px; /* Kisebb térköz */
+    }
+
+    .hamburger-menu .icon span {
+        width: 28px; /* Kisebb szélesség */
+        height: 3px;
+    }
+
+    /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
+    .dropdown {
+        top: 45px; /* Magasság igazítása a kisebb fejléc magassághoz */
+        right: 15px; /* Enyhe behúzás az oldal szélétől */
+        min-width: 180px; /* Kissé kisebb minimális szélesség */
+    }
+
+    /* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
+    .item,
+    .logout {
+        padding: 10px 14px; /* Kisebb belső térköz */
+        font-size: 0.95em;
+    }
+
+    /* --- FELHASZNÁLÓ EMAIL --- */
+    .user-email {
+        font-size: 0.8em;
+        padding: 8px 14px 6px;
+    }
+}/* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 600px) */
+/* ------------------------------------------- */
+
+@media (max-width: 600px) {
+    /* --- HAMBURGER IKON --- */
+    .hamburger-menu .icon {
+        padding: 4px;
+        gap: 3px;
+    }
+
+    .hamburger-menu .icon span {
+        width: 25px; /* Mobilra optimalizált szélesség */
+        height: 2px; /* Vékonyabb vonalak */
+    }
+
+    /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
+    .dropdown {
+        /* A menüt jobban az oldal széléhez igazítjuk */
+        top: 40px; /* Kisebb fejléc miatt igazítva */
+        right: 10px;
+        min-width: 160px; /* Még kisebb minimális szélesség */
+    }
+
+    /* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
+    .item,
+    .logout {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    /* --- FELHASZNÁLÓ EMAIL --- */
+    .user-email {
+        font-size: 0.75em;
+        padding: 7px 12px 5px;
+    }
+}

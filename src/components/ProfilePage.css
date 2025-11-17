@@ -1,0 +1,508 @@
+/* --- ProfilePage.css - Elegáns, Modern Stílus --- */
+
+/* ------------------------------------------- */
+/* 1. ALAP ELRENDEZÉS ÉS OVERLAY (MODERN BLUR) */
+/* ------------------------------------------- */
+.profile-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Mélyebb, elegáns háttér */
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Kiemeltebb elmosás */
+  backdrop-filter: blur(8px);
+}
+
+/* ------------------------------------------- */
+/* 2. A PROFIL KÁRTYA (ELEGÁNS KIEMELÉS) */
+/* ------------------------------------------- */
+.profile-card {
+  /* Enyhe gradient az eleganciáért */
+  background: linear-gradient(145deg, #ffffff, #fcfcfc);
+  border-radius: 16px; /* Lekerekítettebb sarkok */
+  padding: 40px; /* Megnövelt belső tér */
+  width: 90%;
+  max-width: 650px; /* Kissé megnövelt méret */
+  /* Látványos, puha árnyék */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  position: relative;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------- */
+/* 3. BEZÁRÁS GOMB (X) */
+/* ------------------------------------------- */
+.profile-close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #a1887f; /* Elegáns barna árnyalat */
+  transition: color 0.2s;
+}
+
+.profile-close:hover {
+  color: #5d4037; /* Sötét borbarna */
+}
+
+/* ------------------------------------------- */
+/* 4. PROFIL TARTALOM ÉS AVATAR */
+/* ------------------------------------------- */
+.profile-card h2 {
+  margin-top: 0;
+  margin-bottom: 30px;
+  color: #4e342e; /* Sötét borbarna cím */
+  text-align: center;
+  border-bottom: 2px solid #e7e7e7;
+  padding-bottom: 15px;
+  font-weight: 300;
+  font-size: 1.8em;
+}
+
+/* A Rendeléseim H2-t is egységesíti, de szükség lehet egy specifikus stílusra: */
+.profile-card h2:has(.orders-icon) {
+  /* Példa: Ha a rendelések címet külön szeretnéd stílusozni */
+  color: #4e342e;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar {
+  width: 110px;
+  height: 110px;
+  /* Lágy háttér, enyhe belső árnyékkal */
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar i {
+  font-size: 65px;
+  color: #bcaaa4; /* Világosabb, semleges barna */
+}
+
+.profile-content p {
+  margin: 7px 0;
+  font-size: 17px;
+}
+
+.profile-content strong {
+  color: #5d4037;
+  font-weight: 600;
+}
+
+/* ------------------------------------------- */
+/* 5. GOMBOK ÉS BEÁLLÍTÁSOK */
+/* ------------------------------------------- */
+.profile-content h3 {
+  margin-top: 35px;
+  margin-bottom: 15px;
+  color: #6d4c41; /* Középbarna */
+  border-top: 1px solid #e0e0e0;
+  padding-top: 25px;
+  width: 100%;
+  font-weight: 400;
+}
+
+.profile-content button {
+  background-color: #6d4c41; /* Barna gomb */
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  margin: 7px;
+  border-radius: 8px; /* Lekerekítettebb gombok */
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-content button:hover {
+  background-color: #5d4037;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-content button:active {
+  transform: scale(0.97);
+}
+
+/* ------------------------------------------- */
+/* 6. RENDELÉSEK TÁBLÁZATA (USERORDERSPAGE) */
+/* ------------------------------------------- */
+
+/* Táblázat alapstílusa */
+.profile-card table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  /* Puha árnyék */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Táblázat fejrész (Header) */
+.profile-card table thead th {
+  /* Világos, tiszta fejléc a borbarna akcentussal */
+  background-color: #f9f9f9;
+  color: #4e342e; /* Sötét borbarna */
+  font-weight: 600;
+  padding: 18px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Táblázat tartalom (Body) */
+.profile-card table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+/* Sorok kiemelése egérrel (hover) */
+.profile-card table tbody tr:hover {
+  background-color: #f7f7f7;
+}
+
+/* Cellák stílusa */
+.profile-card table tbody td {
+  padding: 15px 15px;
+  color: #333;
+  font-size: 0.95em;
+}
+
+/* Utolsó sor alsó vonalának eltávolítása */
+.profile-card table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Összeg oszlop (kiemelés) */
+.profile-card table tbody tr td:nth-child(3) {
+  font-weight: 700;
+  color: #2e7d32; /* Sötét, elegáns zöld */
+  text-align: right;
+  letter-spacing: 0.2px;
+}
+
+/* Státusz oszlop */
+.profile-card table tbody tr td:nth-child(4) {
+  font-weight: 500;
+  color: #6d4c41; /* Szintén a barna tónus */
+}
+
+/* Kis szöveg üzenetek stílusa */
+.profile-card p {
+  line-height: 1.5;
+  color: #555;
+}
+
+/* Hibaüzenetek egységesítése */
+.profile-card .error {
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* --- ProfilePage.css - Edit Form Stílus --- */
+
+/* ------------------------------------------- */
+/* 7. ADATOK SZERKESZTÉSE FORMA */
+/* ------------------------------------------- */
+
+.edit-form {
+  background-color: #fcfcfc; /* Világosabb háttér a kártyán belül */
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Enyhe árnyék */
+  text-align: center; /* A gombok és input mezők középre igazítása */
+}
+
+.edit-form h3 {
+  color: #4e342e; /* Sötét borbarna cím */
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #efefef;
+  padding-bottom: 10px;
+}
+
+.edit-form input {
+  width: calc(100% - 20px); /* Belső padding miatt */
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px; /* Lekerekítettebb input mezők */
+  font-size: 16px;
+  color: #fcf7f7;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box; /* Padding ne növelje a szélességet */
+}
+
+.edit-form input:focus {
+  border-color: #6d4c41; /* Fókuszban barna keret */
+  box-shadow: 0 0 8px rgba(109, 76, 65, 0.2);
+  outline: none;
+}
+
+.edit-form button {
+  /* Ugyanaz a gombstílus, mint a többi profil gomb */
+  background-color: #6d4c41; /* Barna gomb */
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form button:hover {
+  background-color: #5d4037;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.edit-form button[type="button"] {
+  /* "Mégse" gomb */
+  background-color: #ccc;
+  color: #555;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.edit-form button[type="button"]:hover {
+  background-color: #bbb;
+  color: #333;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- ProfilePage.css - Password Form Stílus --- */
+
+/* ------------------------------------------- */
+/* 8. JELSZÓ MÓDOSÍTÁSA FORMA */
+/* ------------------------------------------- */
+
+.password-form {
+  background-color: #fcfcfc; /* Világosabb háttér a kártyán belül */
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Enyhe árnyék */
+  text-align: center;
+}
+
+.password-form h3 {
+  color: #58433e; /* Sötét borbarna cím */
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #efefef;
+  padding-bottom: 10px;
+}
+
+.password-form input {
+  width: calc(100% - 20px);
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #f3ecec;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+.password-form input:focus {
+  border-color: #6d4c41; /* Fókuszban barna keret */
+  box-shadow: 0 0 8px rgba(109, 76, 65, 0.2);
+  outline: none;
+}
+
+.password-form button {
+  /* Alap gomb stílus (Mentés/Frissítés) */
+  background-color: #6d4c41;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.password-form button:hover {
+  background-color: #5d4037;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.password-form button[type="button"] {
+  /* "Mégse" gomb */
+  background-color: #ccc;
+  color: #555;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.password-form button[type="button"]:hover {
+  background-color: #bbb;
+  color: #333;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+    /* ########################################################################## */
+/* --- MEDIA QUERIES (RESZPONZIVITÁS) --- */
+/* ########################################################################## */
+
+/* ------------------------------------------- */
+/* 1. Kisebb asztali/nagy tablet (Max Szélesség: 800px) */
+/* ------------------------------------------- */
+@media (max-width: 800px) {
+  /* Kártya méretének optimalizálása */
+  .profile-card {
+    max-width: 90%;
+    padding: 30px;
+  }
+
+  /* Fejlécek kisebbítése */
+  .profile-card h2,
+  .edit-form h3,
+  .password-form h3 {
+    font-size: 1.6em;
+  }
+
+  /* --- RENDELÉSEK TÁBLÁZATA (Fő probléma mobil nézetben) --- */
+  .profile-card table {
+    /* Az egész táblázatot megengedjük, hogy scrollozható legyen, ha szükséges */
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap; 
+    margin: 5px;
+  }
+
+  /* A táblázat konténerének szélessége */
+  .profile-card > div {
+    overflow-x: auto; /* A táblázatot körülvevő div scrollozható */
+  }
+
+  .profile-card table thead th,
+  .profile-card table tbody td {
+    padding: 12px 10px; /* Kisebb belső tér */
+    font-size: 0.9em; /* Kisebb betűméret */
+  }
+}
+
+/* ------------------------------------------- */
+/* 2. Mobil Készülékek (Max Szélesség: 500px) */
+/* ------------------------------------------- */
+@media (max-width: 500px) {
+  /* --- PROFIL KÁRTYA --- */
+  .profile-card {
+    border-radius: 20;
+    padding: 20px;
+    width: 90%; /* Teljes szélesség */
+    max-height: 100vh;
+  }
+
+  /* Bezárás gomb pozíciója */
+  .profile-close {
+    top: 10px;
+    right: 15px;
+    font-size: 26px;
+  }
+
+  /* Profil adatok */
+  .profile-content p,
+  .profile-content strong {
+    font-size: 15px;
+  }
+
+  /* Gombok */
+  .profile-content button {
+    padding: 10px 18px;
+    margin: 5px;
+    font-size: 0.9em;
+  }
+
+  /* Gomb szekció elválasztó */
+  .profile-content h3 {
+    padding-top: 15px;
+    margin-top: 20px;
+  }
+
+  /* --- RENDELÉSEK TÁBLÁZATA (Stacking / Stacking helyett Scrollozás) --- */
+  /* Ha a tartalom nem fér el, hagyjuk a horizontális scrollozást, de csökkentünk mindent */
+  .profile-card table {
+    width: 100%; 
+  }
+
+  .profile-card table thead th,
+  .profile-card table tbody td {
+    padding: 10px 8px; /* Még kisebb padding */
+    font-size: 0.8em; /* Még kisebb betűméret */
+  }
+  
+  /* Egyedi igazítások finomítása mobilra */
+  .profile-card table tbody tr td:nth-child(3) { /* Összeg oszlop */
+      text-align: left; /* Jobb, ha balra igazítjuk a többi mellé szűk helyen */
+  }
+  
+  /* --- SZERKESZTŐ FORMOK --- */
+  .edit-form,
+  .password-form {
+    padding: 20px 15px;
+  }
+
+  .edit-form input,
+  .password-form input {
+    width: 100%; /* calc() helyett teljes szélesség */
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}

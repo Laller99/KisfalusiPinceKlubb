@@ -1,0 +1,280 @@
+/* --- MODAL HÁTTÉR ÉS ELHELYEZÉS --- */
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Mélybarna áttetsző háttér */
+  background: rgba(43, 27, 27, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* --- MODAL KÁRTYA (MÉRET ÉS PERSPEKTÍVA) --- */
+.modal-card {
+  perspective: 1000px;
+  /* NAGYOBB MÉRET */
+  width: 400px;
+  height: 500px;
+  position: relative;
+}
+
+/* --- MODAL OLDALAK ALAP STÍLUSA --- */
+.modal-side {
+  /* Sötét háttér, arany keret */
+  background: #2b1b1b;
+  border: 2px solid #d4b68a; /* Halvány arany keret */
+  border-radius: 15px;
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.6); /* Erősebb, sötétebb árnyék */
+  padding: 38px 32px 24px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* Gyorsabb és dinamikusabb átmenet */
+  transition: transform 0.6s cubic-bezier(0.4, 2, 0.2, 1);
+  /* Új: A tartalom igazítása a formban */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- CÍMEK ÉS ALAP SZÖVEG --- */
+.modal-side h2 {
+  color: #d4b68a; /* Arany cím */
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* --- FLIP EFFEKTUS --- */
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+  /* ÚJ: Csak a front látható az elején */
+  backface-visibility: hidden;
+}
+.back {
+  z-index: 1;
+  transform: rotateY(180deg);
+  /* ÚJ: Csak a back látható fordításkor */
+  backface-visibility: hidden;
+}
+.modal-card.flipped .front {
+  transform: rotateY(-180deg);
+}
+.modal-card.flipped .back {
+  transform: rotateY(0deg);
+}
+
+/* --------------------------------------------------------------------- */
+/* --- INPUT MEZŐK STÍLUSA --- */
+/* --------------------------------------------------------------------- */
+
+.modal-side input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #70631b; /* Sötét arany keret */
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.1); /* Enyhe sötét háttér */
+  color: #faf7f3; /* Világos krémszín szöveg */
+  font-size: 1em;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-side input:focus {
+  outline: none;
+  border-color: #d4b68a; /* Fókuszban arany kiemelés */
+  box-shadow: 0 0 5px rgba(212, 182, 138, 0.5);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Placeholder szöveg stílusa (fontos az olvashatóság miatt) */
+.modal-side input::placeholder {
+  color: rgba(250, 247, 243, 0.6);
+}
+
+/* --- GOMB STÍLUSA --- */
+.modal-side button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #70631b; /* Sötét arany háttér */
+  color: #faf7f3; /* Világos szöveg */
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-side button[type="submit"]:hover {
+  background-color: #d4b68a; /* Világosabb arany hoverre */
+  color: #2b1b1b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* --- BEZÁRÁS GOMB --- */
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  font-size: 2.8rem;
+  /* Aranyozott szín a szürke helyett */
+  color: #d4b68a;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+.modal-close:hover {
+  color: #faf7f3; /* Hoverre világos krémszín */
+}
+
+/* --- CSERE LINK (Regisztráció/Bejelentkezés) --- */
+.link {
+  color: #d4b68a; /* Arany link szín */
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.link:hover {
+  color: #faf7f3;
+}
+
+/* --- MODAL LÁBLÉC --- */
+.modal-footer {
+  margin-top: 28px;
+  font-size: 0.95em;
+  color: #faf7f3; /* Világos szöveg a sötét háttéren */
+  text-align: center;
+}
+
+/* --- HIBA ÜZENET --- */
+.error {
+  display: block;
+  color: #ff9999; /* Lágy, pirosas hibaszín */
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+/* ------------------------------------------- */
+/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 768px) */
+/* ------------------------------------------- */
+
+@media (max-width: 768px) {
+  /* --- MODAL HÁTTÉR --- */
+  .modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Mélybarna áttetsző háttér */
+    background: rgba(43, 27, 27, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  /* --- MODAL KÁRTYA (MÉRET) --- */
+  .modal-card {
+    width: 350px; /* Kissé szűkebb kártya */
+    height: 480px;
+    margin-top: 40%; /* Kisebb magasság */
+  }
+
+  /* --- MODAL OLDALAK ALAP STÍLUSA --- */
+  .modal-side {
+    padding: 30px 25px 20px; /* Csökkentjük a belső térközt */
+    border-radius: 12px;
+  }
+
+  /* --- CÍMEK ÉS ALAP SZÖVEG --- */
+  .modal-side h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  /* --- INPUT MEZŐK --- */
+  .modal-side input {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 0.95em;
+  }
+
+  /* --- GOMB STÍLUSA --- */
+  .modal-side button[type="submit"] {
+    padding: 10px;
+    margin-top: 8px;
+    font-size: 0.95em;
+  }
+
+  /* --- BEZÁRÁS GOMB --- */
+  .modal-close {
+    top: 10px;
+    right: 12px;
+    font-size: 2.2rem; /* Kisebb X ikon */
+  }
+
+  /* --- MODAL LÁBLÉC --- */
+  .modal-footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+  }
+} /* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 450px) */
+/* ------------------------------------------- */
+
+@media (max-width: 450px) {
+  /* --- MODAL HÁTTÉR --- */
+  .modal-bg {
+    /* Biztosítjuk, hogy a tartalom felülről is elérhető legyen (görgetés) */
+    align-items: flex-start; /* Felfelé igazítás */
+    padding-top: 20px;
+    height: auto; /* A magasságot a tartalomhoz igazítja, ha görgetni kell */
+    min-height: 100vh;
+    overflow-y: auto; /* Engedélyezzük a görgetést, ha a tartalom nem fér el */
+  }
+
+  /* --- MODAL KÁRTYA (MÉRET) --- */
+  .modal-card {
+    width: 90%; /* A képernyő szélességének 90%-a */
+    max-width: 320px;
+    height: 450px;
+    margin-bottom: 20px; /* Alsó térköz görgetés esetén */
+  }
+
+  /* --- MODAL OLDALAK ALAP STÍLUSA --- */
+  .modal-side {
+    padding: 25px 20px 15px;
+    border-radius: 10px;
+  }
+
+  /* --- CÍMEK --- */
+  .modal-side h2 {
+    font-size: 1.4em;
+    margin-bottom: 15px;
+  }
+
+  /* --- INPUT MEZŐK --- */
+  .modal-side input {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+  }
+
+  /* --- BEZÁRÁS GOMB --- */
+  .modal-close {
+    top: 8px;
+    right: 10px;
+    font-size: 2rem;
+  }
+
+  /* --- MODAL LÁBLÉC --- */
+  .modal-footer {
+    margin-top: 18px;
+    font-size: 0.85em;
+  }
+}

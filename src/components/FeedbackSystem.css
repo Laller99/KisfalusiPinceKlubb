@@ -1,0 +1,364 @@
+/* --- CSS Változók --- */
+:root {
+  --color-base-dark: #0f0f0f; /* Alap Háttér: Mély fekete */
+  --color-card-dark: #1a1a1a; /* Kártya Háttér: Kiemelt sötétszürke */
+  --color-accent-gold: #ffc107; /* Kiemelés: Arany */
+  --color-text-light: #f0f0f0; /* Fő Szöveg: Fehér/Világos szürke */
+  --color-text-dim: #aaaaaa; /* Másodlagos Szöveg: Halvány szürke */
+  --shadow-dark: rgba(0, 0, 0, 0.4); /* Árnyék */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Roboto", sans-serif;
+  --color-success: #28a745;
+  --color-error: #dc3545;
+}
+
+/* --- Általános alapstílusok a konténernek --- */
+.testimonials-section {
+  background-color: var(--color-base-dark);
+  color: var(--color-text-light);
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.testimonials-section .section-title {
+  font-family: var(--font-serif);
+  font-size: 2.5em;
+  color: var(--color-accent-gold);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Háttérgrafika (OPCIONÁLIS) --- */
+.testimonials-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  /* background-image: url("grape-cluster-background.png"); Cseréld le a te grafikádra! */
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* --- VISSZAJELZÉSEK RÁCS --- */
+.testimonials-grid {
+  display: grid;
+  /* Reszponzív rács, ami alkalmazkodik a 2x3 elrendezéshez 6 elem esetén */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- KÁRTYA STÍLUSOK --- */
+.testimonial-card {
+  background-color: var(--color-card-dark);
+  color: var(--color-text-light);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: left;
+  box-shadow: 0 4px 10px var(--shadow-dark);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  border: 1px solid transparent;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+  transform: translateY(-8px);
+  border-color: var(--color-accent-gold);
+}
+
+/* --- Felhasználói Adatok --- */
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+  border: 3px solid var(--color-accent-gold);
+}
+
+.user-name {
+  font-weight: 700;
+  font-size: 1.2em;
+  color: var(--color-accent-gold);
+}
+
+/* --- Visszajelzés Szöveg --- */
+.review-text {
+  font-style: italic;
+  color: var(--color-text-dim);
+  line-height: 1.5;
+  margin-top: 15px;
+}
+
+/* --- Csillagok megjelenítése a kártyán (.rating) --- */
+.rating {
+  margin-top: auto; /* A kártya aljához igazítás */
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+}
+
+.rating .star-icon {
+  font-size: 1.2em;
+  margin-right: 5px;
+  color: var(--color-text-dim); /* Alap szürke csillagok */
+}
+
+.rating .star-icon.active {
+  color: var(--color-accent-gold); /* Kitöltött csillagok arany */
+}
+
+/* --- Összesített Értékelés --- */
+.overall-rating {
+  margin: 20px auto 40px auto;
+  font-size: 1.1em;
+  color: var(--color-text-light);
+  display: flex;
+  justify-content: center;
+}
+
+/* --- USER RATING SECTION STÍLUSOK (Saját értékelés adása) --- */
+.user-rating-section {
+  max-width: 600px;
+  margin: 60px auto 20px auto;
+  background-color: var(--color-card-dark);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-dark);
+  text-align: center;
+  border: 1px solid var(--color-accent-gold);
+  z-index: 60;
+}
+
+.user-rating-section .section-title {
+  color: var(--color-accent-gold);
+  font-size: 1.8em;
+  margin-top: 0;
+}
+
+.user-rating-section .section-subtitle {
+  font-size: 1em;
+  color: var(--color-text-dim);
+  margin-bottom: 30px;
+}
+
+.star-selection-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.star-selection-icon {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 3em;
+  margin: 0 10px;
+  color: var(--color-text-dim);
+  transition: color 0.2s;
+}
+
+.star-selection-icon:hover,
+.star-selection-icon.active {
+  color: var(--color-accent-gold);
+}
+
+.current-rating-display {
+  font-size: 1.2em;
+  color: var(--color-text-light);
+  margin-top: 20px;
+}
+.rating-value {
+  font-weight: bold;
+  color: var(--color-accent-gold);
+}
+
+/* --- GOMBOK ÉS ÜZENETEK --- */
+.submit-button {
+  padding: 12px 30px;
+  font-size: 1.1em;
+  background-color: var(--color-accent-gold);
+  color: var(--color-base-dark);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 25px;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.submit-button:hover {
+  background-color: #f7b000;
+  transform: translateY(-2px);
+}
+
+.submit-message {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.submit-message.success {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.submit-message.error {
+  background-color: var(--color-error);
+  color: white;
+}
+/* ------------------------------------------- */
+/* 1. TABLET ÉS KÖZEPES KÉPERNYŐK (Max Szélesség: 900px) */
+/* ------------------------------------------- */
+
+@media (max-width: 900px) {
+    /* --- FŐ SZEKCIÓ --- */
+    .testimonials-section {
+        padding: 30px 15px;
+    }
+
+    /* --- CÍM --- */
+    .testimonials-section .section-title {
+        font-size: 2.2em;
+        margin-bottom: 15px;
+    }
+    
+    /* --- HÁTTÉR GRAFIKA --- */
+    .testimonials-section::before {
+        width: 600px; /* Kisebb háttérgrafika */
+        height: 600px;
+    }
+
+    /* --- VISSZAJELZÉS RÁCS --- */
+    .testimonials-grid {
+        /* Két oszlopos elrendezés 700px felett, ha lehetséges, de kisebb min-width */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        max-width: 95%;
+    }
+
+    /* --- KÁRTYA --- */
+    .testimonial-card {
+        padding: 25px;
+        min-height: 220px;
+    }
+
+    /* --- USER RATING FORM --- */
+    .user-rating-section {
+        max-width: 500px;
+        padding: 30px;
+    }
+    
+    .user-rating-section .section-title {
+        font-size: 1.6em;
+    }
+    
+    /* Csillagok méretének csökkentése */
+    .star-selection-icon {
+        font-size: 2.5em;
+        margin: 0 8px;
+    }
+    
+    .submit-button {
+        padding: 10px 25px;
+        font-size: 1em;
+    }
+}/* ------------------------------------------- */
+/* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 550px) */
+/* ------------------------------------------- */
+
+@media (max-width: 550px) {
+    /* --- FŐ SZEKCIÓ --- */
+    .testimonials-section {
+        padding: 20px 10px;
+    }
+
+    /* --- CÍM --- */
+    .testimonials-section .section-title {
+        font-size: 2em;
+        padding-top: 10px;
+    }
+    
+    /* --- VISSZAJELZÉS RÁCS --- */
+    .testimonials-grid {
+        /* Mobil nézet: egyoszlopos elrendezés */
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* --- KÁRTYA --- */
+    .testimonial-card {
+        padding: 20px;
+        min-height: auto; /* A tartalom határozza meg a magasságot */
+    }
+
+    /* Avatar és Név */
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+    }
+    .user-name {
+        font-size: 1.1em;
+    }
+    
+    .review-text {
+        font-size: 0.95em;
+    }
+    
+    /* --- USER RATING FORM --- */
+    .user-rating-section {
+        max-width: 95%;
+        padding: 25px 15px;
+        margin-top: 40px;
+    }
+    
+    .user-rating-section .section-title {
+        font-size: 1.4em;
+    }
+    
+    .user-rating-section .section-subtitle {
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+
+    /* Csillagok méretének további csökkentése */
+    .star-selection-container {
+        flex-wrap: wrap; /* Szükség esetén betörhetnek */
+    }
+    
+    .star-selection-icon {
+        font-size: 2em; /* Jól kattintható, de kisebb */
+        margin: 0 5px;
+    }
+    
+    .submit-button {
+        width: 100%; /* Teljes szélességű gomb */
+    }
+    
+    .submit-message {
+        font-size: 0.9em;
+    }
+}

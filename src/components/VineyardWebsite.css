@@ -1,0 +1,981 @@
+/* A felhasználó által megadott ALAPOK */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* LÉNYEG: Sima oldalváltás horgonyokra (linkekre) ugráskor */
+  scroll-behavior: smooth;
+  font-family: "Playfair Display", serif;
+}
+
+body {
+  background-color: #faf7f3; /* Krémszín */
+  color: #2b1b1b; /* Mélybarna */
+}
+
+/* --- Tényleges Oldaltartalom Stílusa (Intro után) --- */
+.page-content {
+  /* Kezdeti állapot, rejtett */
+  padding: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 500;
+}
+
+.page-content.is-visible {
+  /* VÉGSŐ ÁLLAPOT, látható */
+  position: relative;
+  opacity: 1;
+  min-height: 100vh;
+}
+
+/* ########################################################################## */
+/* --- 2. INTRO KÉPERNYŐ (Fény és Borítás) STÍLUSOK (Átfestve) --- */
+/* ########################################################################## */
+
+/* --- A Sötét Borítás (Overlay) --- */
+.intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #2b1b1b; /* Mélybarna (teljesen sötét) */
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 10s ease-in-out;
+}
+
+/* A borítás eltüntetése */
+.intro-overlay.is-transparent {
+  opacity: 0;
+  z-index: 1; /* Hogy a tartalom fölé kerüljön */
+  pointer-events: none;
+}
+
+/* --- Belépek Gomb --- */
+.enter-button {
+  z-index: 1001;
+  background: #5a2a27; /* Bordó */
+  color: #faf7f3; /* Krémszín */
+  border: 2px solid #d4b68a; /* Aranyos bézs keret */
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: background 0.2s;
+  margin-top: 25%;
+  margin-left: 0%;
+}
+
+.enter-button:hover {
+  background: #6e3532;
+}
+.light-source {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #d4b68a;
+  box-shadow: 0 0 50px 30px #d4b68a, 0 0 100px 60px rgba(212, 182, 138, 0.4);
+  filter: blur(10px);
+  z-index: 999;
+  transform: translate(-50%, 0);
+  transition: transform 7s cubic-bezier(0.4, 0, 0.6, 1),
+    background-color 10s cubic-bezier(0.4, 0, 0.6, 1),
+    box-shadow 10s cubic-bezier(0.4, 0, 0.6, 1),
+    width 10s cubic-bezier(0.4, 0, 0.6, 1),
+    height 10s cubic-bezier(0.4, 0, 0.6, 1),
+    filter 10s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.light-source.animate-to-sun {
+  transform: translate(950%, -800%) rotate(15deg);
+  width: 100px;
+  height: 100px;
+  background-color: #ffd700;
+  box-shadow: 0 0 30px 15px #ffd700, 0 0 60px 30px rgba(255, 215, 0, 0.6);
+  filter: blur(5px);
+}
+
+.belépő {
+  position: absolute; /* Hozzáadva a pontos mozgáshoz */
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  background-color: #070707;
+  border-radius: 50%;
+  border: 5px solid rgb(112, 99, 27);
+  margin-top: 5%;
+  margin-left: 19%;
+
+  /* KEZDETI POZÍCIÓ: Középre igazítva */
+  transform: translate(-50%, 0);
+
+  /* ÁTMENTEK: Minden, ami változik, most 4 másodpercig tart */
+  transition: transform 4s cubic-bezier(0.4, 0, 0.6, 1),
+    background-color 4s cubic-bezier(0.4, 0, 0.6, 1),
+    box-shadow 4s cubic-bezier(0.4, 0, 0.6, 1),
+    width 4s cubic-bezier(0.4, 0, 0.6, 1),
+    height 4s cubic-bezier(0.4, 0, 0.6, 1),
+    filter 4s cubic-bezier(0.4, 0, 0.6, 1);
+}
+.belépő-animated {
+  /* VÉGSŐ POZÍCIÓ: Balra tolás (negatív X) és felfelé tolás (negatív Y), és forgatás */
+  /* Pl. Balra 700% és Felfelé 800% */
+  transform: translate(-1000%, -300%) rotate(-15deg); /* rotate: -15deg a variáció kedvéért */
+
+  width: 100px;
+  height: 100px;
+  background-color: #030303;
+  box-shadow: 0 0 30px 15px #aa9311, 0 0 60px 30px rgba(255, 215, 0, 0.6);
+  filter: blur(5px);
+}
+
+.belépő img {
+  width: 100%;
+  height: 100%;
+}
+
+.leaves-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 550; /* A tartalom és a borítás között */
+  pointer-events: none;
+}
+
+.leaf {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+
+  border-radius: 50% 50% 0 50%;
+  opacity: 0;
+  filter: blur(1px);
+  animation: fall 10s linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* ########################################################################## */
+/* --- 4. FELHASZNÁLÓ ÁLTAL MEGADOTT FŐ OLDALTARTALOM STÍLUSOK --- */
+/* ########################################################################## */
+
+/* --- HERO --- */
+.hero {
+  height: 100vh;
+
+  /* Kép cserélve a placeholderre */
+  background: linear-gradient(rgba(90, 42, 39, 0.6), rgba(43, 27, 27, 0.8)),
+    url("images/vineyard-bg.jpg") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #faf7f3;
+  position: relative;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  letter-spacing: 2px;
+}
+
+.hero-content p {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+}
+
+.cta-btn {
+  background: #d4b68a;
+  color: #2b1b1b;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background 0.3s;
+}
+
+.cta-btn:hover {
+  background: #c29d6b;
+}
+
+/* --- DÍJNYERTES BOROK --- */
+.award-wines {
+  padding: 6rem 5%;
+  background: #faf7f3;
+  text-align: center;
+}
+
+.award-wines h2 {
+  font-size: 2rem;
+  color: #5a2a27;
+  margin-bottom: 2rem;
+}
+
+.wine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2rem;
+}
+.wine-card:nth-child(1) {
+  background-image: url(Image/Alkony.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Második kártya */
+.wine-card:nth-child(2) {
+  background-image: url(Image/Vér.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Harmadik kártya */
+.wine-card:nth-child(3) {
+  background-image: url(Image/Észak.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.wine-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0; /* Kezdetben rejtve */
+  transform: none; /* A mozgás indulásáig semmi transform */
+  will-change: transform, opacity;
+}
+
+.wine-card:hover {
+  transform: translateY(-8px);
+}
+
+span {
+  background-color: rgba(255, 255, 255, 0.45);
+}
+.wine-card img {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+}
+
+.wine-card h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 30px;
+  color: #0e0303;
+}
+
+.wine-card p {
+  padding: 0 1rem 1.5rem;
+  color: #050202;
+  font-size: 20px;
+}
+.wine-card:nth-child(1).is-visible {
+  animation: slideInFromLeft 2s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  /* Késleltetés nélkül indul */
+}
+
+/* 2. Kártya: Alulról beúszás (ha látható) */
+.wine-card:nth-child(2).is-visible {
+  animation: slideInFromBottom 2s cubic-bezier(0.4, 0, 0.6, 1) 0.2s forwards;
+  /* Kicsi késleltetés a lépcsőzetes megjelenéshez */
+}
+
+/* 3. Kártya: Jobbról beúszás (ha látható) */
+.wine-card:nth-child(3).is-visible {
+  animation: slideInFromRight 2s cubic-bezier(0.4, 0, 0.6, 1) 0.4s forwards;
+  /* Még nagyobb késleltetés */
+}
+
+/* 1. Balról beúszás (Az első kártyához) */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 2. Alulról beúszás (A második kártyához) */
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3. Jobbról beúszás (A harmadik kártyához) */
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- BOROK SLIDER --- */
+.shop {
+  padding: 6rem 0;
+  background: #fffaf5;
+  text-align: center;
+}
+
+.shop h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #5a2a27;
+}
+
+.wine-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 2rem;
+  padding: 0 2rem;
+  scroll-snap-type: x mandatory;
+}
+
+.wine-item {
+  flex: 0 0 auto;
+  width: 220px;
+  background: #faf7f3;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  scroll-snap-align: start;
+  transition: transform 0.3s;
+}
+
+.wine-item:hover {
+  transform: scale(1.05);
+}
+
+.wine-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.wine-item h3 {
+  color: #5a2a27;
+  margin-top: 0.5rem;
+}
+
+.wine-item p {
+  font-weight: bold;
+  color: #2b1b1b;
+}
+
+.wine-item button {
+  margin: 0.5rem 0 1rem;
+  background: #d4b68a;
+  color: #2b1b1b;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.wine-item button:hover {
+  background: #c29d6b;
+}
+
+/* --- RESZPONZÍV --- */
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    padding: 1rem 3rem; /* Visszaállítva a felxibilis paddingra */
+  }
+
+  .nav {
+    margin-top: 0.5rem;
+  }
+
+  .footer {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-bottom {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .cta-btn {
+    font-size: 0.9rem;
+  }
+}
+
+/* ====== Variables & base ====== */
+:root {
+  --bg: #2b1b1b;
+  --panel: #0f0f12;
+  --accent: #c69749;
+  --muted: #9aa0a6;
+  --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --overlay-duration: 6s;
+  --stagger: 150ms;
+}
+
+/* Hero alap */
+.hs-hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(90, 42, 39, 0.6),
+    rgba(43, 27, 27, 0.8)
+  );
+  color: #fff;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+}
+
+/* ===== Overlay (betöltési split) ===== */
+.hs-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.hs-overlay__top,
+.hs-overlay__bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, var(--bg) 0%, #111 100%);
+  will-change: transform, opacity;
+}
+
+/* top panel a tetején, bottom alul */
+.hs-overlay__top {
+  top: 0;
+  transform-origin: center bottom;
+}
+.hs-overlay__bottom {
+  bottom: 0;
+  transform-origin: center top;
+}
+
+/* ===== Tartalom ===== */
+.hs-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 6vh 5vw;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* Rétegelt dobozok (bal oldali látvány) */
+.hs-layers {
+  position: relative;
+  min-height: 60vh;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  pointer-events: none;
+  background: linear-gradient(to right, #c69749 0%, #2b1b1b 100%);
+  border-radius: 100px;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 20 var(--ease);
+}
+
+/* Egyes boxok: háttérképes, 3D hatás, z-index variálva -- inline style --z szabja */
+.hs-box {
+  --w: 420px;
+  position: absolute;
+  width: var(--w);
+  height: calc(var(--w) * 0.85);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  transform-origin: center;
+  transform: translateY(24px) rotateX(10deg) scale(0.98);
+  opacity: 0;
+  transition: transform 4000ms var(--ease), opacity 400ms linear;
+  z-index: var(--z, 1);
+
+  background-blend-mode: multiply;
+  will-change: transform, opacity;
+  overflow: visible !important;
+}
+.hs-box img {
+  width: 60%;
+}
+/* kicsit eltoljuk egymáshoz képest (helyezés) — egyedi pozíciók JS-sel finomíthatók */
+/* Minden doboz méretét scale(1)-re állítjuk az egységes méret érdekében. */
+.hs-box[data-order="1"] {
+  /* Méret: Egységes scale(1). Pozíció: Balra és fel. Dőlés: Balra. */
+  transform: translate(150%, -50%) rotate(55deg) scale(1) rotateX(8deg);
+}
+.hs-box[data-order="2"] {
+  /* Méret: Egységes scale(1). Pozíció: Középen, enyhe eltolással. Dőlés: Jobbra. */
+  transform: translate(30%, -60%) rotate(25deg) scale(1) rotateX(4deg);
+}
+.hs-box[data-order="3"] {
+  /* Méret: Egységes scale(1). Pozíció: Jobbra és le. Dőlés: Jobbra. */
+  transform: translate(-100%, -90%) rotate(-30deg) scale(1) rotateX(10deg);
+}
+
+/* széles és keskeny képernyőkhöz módosítható */
+@media (max-width: 1100px) {
+  .hs-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .hs-box {
+    --w: 340px;
+    height: calc(var(--w) * 0.8);
+  }
+}
+@media (max-width: 800px) {
+  .hs-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 4vh 4vw;
+  }
+  .hs-layers {
+    order: 2;
+    height: 44vh;
+    margin-top: 2rem;
+  }
+}
+
+/* Copy (jobb oldal) */
+.hs-copy {
+  align-self: center;
+  pointer-events: auto;
+  transition: opacity 300ms ease-in;
+}
+.hs-copy--hidden {
+  opacity: 0;
+}
+.hs-copy--visible {
+  opacity: 1;
+}
+.hs-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 600ms var(--ease), transform 700ms var(--ease);
+  will-change: transform, opacity;
+  text-wrap: balance;
+}
+.hs-sub {
+  margin: 0 0 5rem;
+  color: rgb(126, 98, 98);
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms var(--ease), transform 550ms var(--ease);
+}
+.hs-cta {
+  display: flex;
+  justify-content: center;
+  width: 300px;
+  height: 80px;
+  padding: 0.7rem 1.2rem;
+  border-radius: 15px;
+  border: 2px solid gold;
+  background: linear-gradient(to right, #c69749 0%, #2b1b1b 100%);
+  color: #070707;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 35px;
+  align-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+  box-shadow: 0 0px 24px rgba(198, 151, 73, 0.6);
+}
+.hs-cta:hover {
+  transform: translateY(-10px);
+  border: 5px solid yellow;
+  box-shadow: 0 0px 34px rgba(226, 230, 13, 0.938);
+}
+
+/* ===== Animált (aktív) állapot osztályok — JS tolja rá ezeket ===== */
+.hs-overlay--hidden .hs-overlay__top {
+  transform: translateY(-100%);
+  transition: transform var(--overlay-duration) var(--ease);
+}
+.hs-overlay--hidden .hs-overlay__bottom {
+  transform: translateY(100%);
+  transition: transform var(--overlay-duration) var(--ease);
+}
+
+/* Box látható osztály */
+.hs-box--in {
+  opacity: 1;
+  transform: translateY(0) rotateX(0) scale(1);
+}
+
+/* Copy látható */
+.hs-title--in,
+.hs-sub--in,
+.hs-cta--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3D finom fények (tech feeling) */
+.hs-layers::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      800px 200px at 10% 10%,
+      rgba(255, 255, 255, 0.02),
+      transparent 10%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent 40%);
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+/* Reduced motion támogatás */
+@media (prefers-reduced-motion: reduce) {
+  .hs-overlay__top,
+  .hs-overlay__bottom,
+  .hs-box,
+  .hs-title,
+  .hs-sub,
+  .hs-cta {
+    transition: none !important;
+    animation: none !important;
+  }
+  .hs-overlay--hidden .hs-overlay__top,
+  .hs-overlay--hidden .hs-overlay__bottom {
+    transform: none;
+    opacity: 0;
+  }
+  .hs-box {
+    opacity: 1;
+    transform: none;
+  }
+  .hs-title,
+  .hs-sub,
+  .hs-cta {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.about-section {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 4%;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 2.5s ease, transform 2.5s ease;
+  background: #818136;
+  overflow: hidden;
+  gap: 3%;
+  width: 98%;
+  margin: 5px;
+  border-radius: 20px;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* szöveg */
+.about-text {
+  flex: 1;
+  padding: 60px 50px;
+  color: #3b2f2f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about-text h2 {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.about-text p {
+  font-size: 1.5rem;
+  line-height: 1.8;
+}
+
+/* kép */
+.about-image {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* ########################################################################## */
+/* --- MEDIA QUERIES --- */
+/* ########################################################################## */
+
+/* ------------------------------------------- */
+/* 1. MOBIL KÉSZÜLÉKEK (Max Szélesség: 600px) */
+/* ------------------------------------------- */
+@media (max-width: 600px) {
+  /* --- ALAP BEÁLLÍTÁSOK --- */
+  body {
+    font-size: 14px;
+  }
+
+  /* --- INTRO KÉPERNYŐ --- */
+  /* A belépő gomb középre igazítása és kisebbítése */
+  .enter-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    margin-top: 50%; /* Több hely középen */
+    margin-left: 0;
+  }
+
+  /* A mozgó fényforrás kisebbítése és a pozíció finomítása */
+  .light-source {
+    width: 150px;
+    height: 150px;
+    box-shadow: 0 0 30px 20px #d4b68a, 0 0 70px 40px rgba(212, 182, 138, 0.4);
+  }
+  .light-source.animate-to-sun {
+    transform: translate(600%, -700%) rotate(15deg); /* Új, mobilra optimalizált végállapot */
+  }
+
+  /* A 'belépő' animált kör kisebbítése és pozíciója */
+  .belépő {
+    width: 250px;
+    height: 250px;
+    margin-top: 10%;
+    margin-left: 50%;
+    transform: translate(-50%, 0);
+  }
+  .belépő-animated {
+    transform: translate(-900%, -400%) rotate(-15deg); /* Új, mobilra optimalizált végállapot */
+    width: 80px;
+    height: 80px;
+  }
+
+  /* --- HAGYOMÁNYOS HERO (ha használnád a .hero-t) --- */
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  /* --- HERO SPLIT SCREEN (.hs-hero) --- */
+  .hs-hero {
+    padding: 4vh 4vw;
+  }
+  .hs-content {
+    /* Átváltás egy oszlopra */
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 4vh 4vw;
+    text-align: center;
+    margin-top: 10%;
+  }
+  .hs-layers {
+    /* A kép szekció a szöveg alá kerül */
+    order: 2;
+    width: 100%;
+  }
+
+  /* Képboxok kisebbítése és pozíció finomítása mobilra */
+  .hs-box {
+    width: 40%;
+    --w: 260px; /* Még kisebb alapméret */
+    height: calc(var(--w) * 0.85);
+  }
+  /* Mivel szűk a hely, a 3D eltolásokat és forgatásokat minimálisra csökkentjük */
+  .hs-box[data-order="1"] {
+    transform: translate(90%, -50%) rotate(40deg) scale(1) rotateX(8deg);
+  }
+  .hs-box[data-order="2"] {
+    transform: translate(5%, -60%) rotate(10deg) scale(1) rotateX(4deg);
+  }
+  .hs-box[data-order="3"] {
+    transform: translate(-90%, -50%) rotate(-15deg) scale(1) rotateX(10deg);
+  }
+
+  .hs-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .hs-sub {
+    font-size: 1rem;
+    margin-bottom: 3rem;
+  }
+  .hs-cta {
+    width: 70%; /* Kitölti a szélességet */
+    margin: 0 auto;
+    font-size: 35px;
+  }
+
+  /* --- DÍJNYERTES BOROK --- */
+  .wine-grid {
+    /* Átváltás egy oszlopra, a minmax értékét csökkentjük */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .wine-grid > * {
+    min-width: 0; /* Megakadályozza a horizontális scrollt */
+  }
+
+  /* --- RÓLUNK SZEKCIÓ --- */
+  .about-section {
+    flex-direction: column;
+    padding: 4% 0; /* Oldalpadding eltávolítása a kép kitölti a szélességet */
+    gap: 0;
+  }
+  .about-text {
+    padding: 30px 20px;
+    order: 2; /* Szöveg a kép alá kerül */
+  }
+  .about-text h2 {
+    font-size: 2.5rem;
+  }
+  .about-text p {
+    font-size: 1.1rem;
+  }
+  .about-image {
+    flex: 0 0 300px; /* Fix magasság mobilra, hogy látszódjon a kép */
+    height: 300px;
+    order: 1; /* Kép felülre kerül */
+  }
+} /* ------------------------------------------- */
+/* 2. TABLET ÉS KISEBB ASZTALI GÉPEK (601px - 1100px) */
+/* ------------------------------------------- */
+@media (min-width: 601px) and (max-width: 1100px) {
+  /* --- HERO SPLIT SCREEN (.hs-hero) --- */
+  .hs-content {
+    /* Két oszlop, de a kép kisebb */
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+  }
+  .hs-layers {
+    /* Magasság növelése a láthatóságért */
+    height: 50vh;
+  }
+  .hs-box {
+    --w: 340px;
+    height: calc(var(--w) * 0.85);
+  }
+
+  /* A 3D pozíciók finomítása */
+  .hs-box[data-order="1"] {
+    transform: translate(140%, -50%) rotate(50deg) scale(1) rotateX(8deg);
+  }
+  .hs-box[data-order="3"] {
+    transform: translate(-100%, -90%) rotate(-30deg) scale(1) rotateX(10deg);
+  }
+
+  .hs-title {
+    font-size: 2.8rem;
+  }
+  .hs-sub {
+    font-size: 1.1rem;
+  }
+  .hs-cta {
+    /* A gomb szélességének megtartása, de középre igazítása */
+    width: 280px;
+    margin-left: 0;
+  }
+
+  /* --- DÍJNYERTES BOROK --- */
+  .wine-grid {
+    /* 2 vagy 3 oszlop, de a minmax értéket csökkentjük */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* --- RÓLUNK SZEKCIÓ --- */
+  .about-text {
+    padding: 50px 30px;
+  }
+  .about-text h2 {
+    font-size: 3rem;
+  }
+  .about-text p {
+    font-size: 1.3rem;
+  }
+}

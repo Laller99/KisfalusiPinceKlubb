@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend API for the portfolio webshop",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jwt-decode": "^4.0.0",
+    "mongodb": "^7.0.0",
+    "nodemailer": "^7.0.10",
+    "paypal-rest-sdk": "^1.8.1",
+    "react-router-dom": "^7.9.6"
+  }
+}
