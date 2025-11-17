@@ -247,21 +247,21 @@ body {
   gap: 2rem;
 }
 .wine-card:nth-child(1) {
-  background-image: url(Image/Alkony.jpg);
+  background-image: url(/public/Image/Alkony.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 /* Második kártya */
 .wine-card:nth-child(2) {
-  background-image: url(Image/Vér.jpg);
+  background-image: url(/public/Image/Vér.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 /* Harmadik kártya */
 .wine-card:nth-child(3) {
-  background-image: url(Image/Észak.jpg);
+  background-image: url(/public/Image/Észak.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
