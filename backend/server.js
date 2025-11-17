@@ -412,7 +412,7 @@ app.use((err, req, res, next) => {
 // ---------------------------------------------------------------------
 // --- Szerver Indítása ---
 // ---------------------------------------------------------------------
-
-app.listen(API_PORT, () => {
-  console.log(`🚀 A backend fut a http://localhost:${API_PORT} címen`);
+const PORT = process.env.PORT || 3001; // Render vagy lokális fallback
+app.listen(PORT, () => {
+  console.log(`🚀 A backend fut a http://localhost:${PORT} címen`);
 });

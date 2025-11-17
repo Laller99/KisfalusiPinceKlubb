@@ -119,21 +119,16 @@
     top: 0;
     left: 0;
     width: 100%; /* teljes szélesség */
-
-    padding: 10px 15px;
-   
-
-     /* opcionális háttér, hogy ne tűnjön el */
-    backdrop-filter: blur(5px); /* extra igényesség */
+    height: 9%;
+    padding: 10px 15px; /* opcionális háttér, hogy ne tűnjön el */
+    backdrop-filter: blur(2px); /* extra igényesség */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
-  
-
   /* --- LOGO --- */
   .logo {
-    width: 70px; /* Még kisebb logó mobilon */
-    height: 50px;
+    width: 60px; /* Még kisebb logó mobilon */
+    height: 40px;
     margin-bottom: 0.5rem; /* Elválasztás a nav-tól */
   }
 
@@ -150,8 +145,8 @@
   .nav a,
   .nav button {
     font-size: 16px; /* A legkisebb olvasható méret */
-    margin: 0.25rem 0.5rem; /* Kisebb belső és külső térköz */
-    padding: 0.4rem 0.8rem;
+    margin: 0.1rem 0.2rem; /* Kisebb belső és külső térköz */
+    padding: 0.1rem 0.4rem;
   }
 
   .nav a {

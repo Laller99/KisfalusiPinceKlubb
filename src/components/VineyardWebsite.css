@@ -833,62 +833,52 @@ span {
     width: 80px;
     height: 80px;
   }
+  /* Mobil eszközök (max-width: 768px) */
+  @media (max-width: 768px) {
+    /* Hero cím és alcím */
+    .hero-content h1,
+    .hs-title {
+      font-size: 1.8rem; /* kisebb cím */
+    }
+    .hero-content p,
+    .hs-sub {
+      font-size: 0.9rem;
+      margin: 1px; /* kisebb alcím */
+    }
 
-  /* --- HAGYOMÁNYOS HERO (ha használnád a .hero-t) --- */
-  .hero-content h1 {
-    font-size: 2.2rem;
-  }
-  .hero-content p {
-    font-size: 1rem;
-  }
+    /* Hero split screen */
+    .hs-hero {
+      padding: 3vh 3vw; /* kisebb padding */
+    }
+    .hs-content {
+      gap: 1rem;
+      padding: 2vh 2vw;
+      text-align: center;
+    }
 
-  /* --- HERO SPLIT SCREEN (.hs-hero) --- */
-  .hs-hero {
-    padding: 4vh 4vw;
-  }
-  .hs-content {
-    /* Átváltás egy oszlopra */
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 4vh 4vw;
-    text-align: center;
-    margin-top: 10%;
-  }
-  .hs-layers {
-    /* A kép szekció a szöveg alá kerül */
-    order: 2;
-    width: 100%;
-  }
+    /* Képboxok kisebbítése */
+    .hs-box {
+      width: 35%;
+      --w: 180px; /* kisebb alapméret */
+      height: calc(var(--w) * 0.85);
+    }
 
-  /* Képboxok kisebbítése és pozíció finomítása mobilra */
-  .hs-box {
-    width: 40%;
-    --w: 260px; /* Még kisebb alapméret */
-    height: calc(var(--w) * 0.85);
-  }
-  /* Mivel szűk a hely, a 3D eltolásokat és forgatásokat minimálisra csökkentjük */
-  .hs-box[data-order="1"] {
-    transform: translate(90%, -50%) rotate(40deg) scale(1) rotateX(8deg);
-  }
-  .hs-box[data-order="2"] {
-    transform: translate(5%, -60%) rotate(10deg) scale(1) rotateX(4deg);
-  }
-  .hs-box[data-order="3"] {
-    transform: translate(-90%, -50%) rotate(-15deg) scale(1) rotateX(10deg);
-  }
+    .hs-box[data-order="1"] {
+      transform: translate(90%, -50%) rotate(35deg) scale(1.3) rotateX(5deg);
+    }
+    .hs-box[data-order="2"] {
+      transform: translate(0%, -120%) rotate(5deg) scale(1.3) rotateX(2deg);
+    }
+    .hs-box[data-order="3"] {
+      transform: translate(-90%, -50%) rotate(-10deg) scale(1.3) rotateX(5deg);
+    }
 
-  .hs-title {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-  }
-  .hs-sub {
-    font-size: 1rem;
-    margin-bottom: 3rem;
-  }
-  .hs-cta {
-    width: 70%; /* Kitölti a szélességet */
-    margin: 0 auto;
-    font-size: 35px;
+    /* CTA gomb */
+    .hs-cta {
+      width: 90%; /* kisebb szélesség, elfér a képernyőn */
+      font-size: 28px; /* kisebb gombszöveg */
+      margin: 1rem auto 0 auto; /* középre igazítás, kis margó felül */
+    }
   }
 
   /* --- DÍJNYERTES BOROK --- */
@@ -977,5 +967,32 @@ span {
   }
   .about-text p {
     font-size: 1.3rem;
+  }
+}
+/* Mobil eszközök (max 768px szélesség) */
+@media (max-width: 768px) {
+  .leaves-container {
+    z-index: 500; /* Lejjebb lehet venni, ha a tartalom legyen előtérben */
+  }
+
+  .leaf {
+    width: 50px; /* kisebb levél méret */
+    height: 50px;
+    filter: blur(0.5px); /* kicsit kevesebb blur, gyorsabb renderelés */
+    animation: fall 8s linear infinite; /* rövidebb animáció, gyorsabb hullás */
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-10vh) rotate(0deg) scale(0.6);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(110vh) rotate(720deg) scale(1);
+      opacity: 0;
+    }
   }
 }
