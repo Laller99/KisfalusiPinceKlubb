@@ -806,7 +806,7 @@ span {
   .enter-button {
     padding: 12px 24px;
     font-size: 1rem;
-    margin-top: 50%; /* Több hely középen */
+    margin-top: 100%; /* Több hely középen */
     margin-left: 0;
   }
 
@@ -814,6 +814,7 @@ span {
   .light-source {
     width: 150px;
     height: 150px;
+    margin-bottom: 20%;
     box-shadow: 0 0 30px 20px #d4b68a, 0 0 70px 40px rgba(212, 182, 138, 0.4);
   }
   .light-source.animate-to-sun {
@@ -824,8 +825,8 @@ span {
   .belépő {
     width: 250px;
     height: 250px;
-    margin-top: 10%;
-    margin-left: 50%;
+    margin-top: 20%;
+    margin-left: 60%;
     transform: translate(-50%, 0);
   }
   .belépő-animated {
