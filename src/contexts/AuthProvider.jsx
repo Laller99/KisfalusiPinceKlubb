@@ -12,7 +12,7 @@ const AuthContext = createContext({
 });
 
 // Segítség: Használjunk környezeti változót, ha a backend külön URL-en fut
-const API_BASE_URL = process.env.REACT_APP_API_URL || "";
+const API_URL = process.env.REACT_APP_API_URL || "";
 
 // ✅ VÁLTOZTATÁS: Használjuk a jwtDecode-ot a saját parseJwt helyett, hogy elkerüljük a duplikációt.
 // Az előző válaszban szereplő parseJwt már nincs a kódban, de a jwtDecode-ot kell használni helyette.
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
 
   // Belépés
   const login = async (email, password) => {
-    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    const res = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
 
   // Regisztráció + automatikus login után
   const register = async (email, password) => {
-    const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+    const res = await fetch(`${API_URL}/api/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
