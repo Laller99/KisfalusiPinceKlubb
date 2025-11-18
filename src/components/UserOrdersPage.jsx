@@ -4,7 +4,8 @@ import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import "./ProfilePage.css"; // Használhatod a ProfilePage stílusait
 
-const API_ORDERS_URL = "/api/user/orders";
+const API_ORDERS_URL =
+  "https://kisfalusipinceklubb.onrender.com/api/user/orders";
 
 export default function UserOrdersPage({ onClose }) {
   const { user } = useContext(AuthContext);

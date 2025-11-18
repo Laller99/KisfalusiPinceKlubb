@@ -366,6 +366,7 @@ span {
   .wine-card img {
     max-width: 250px;
     height: auto;
+    top: 4%; /* egy kis felső margó */
     margin-bottom: 10px;
   }
 
@@ -489,7 +490,6 @@ span {
   .order-summary-table {
     display: block;
     overflow-x: auto;
-    white-space: nowrap;
   }
 
   .order-summary-table thead,
@@ -497,6 +497,7 @@ span {
     display: table;
     width: 100%;
     table-layout: fixed;
+    gap: 5px;
   }
 
   .order-form input[type="text"],
@@ -553,7 +554,7 @@ span {
   border-radius: 8px;
 
   /* hogy ne csússzon el */
-  top: 15%; /* egy kis felső margó */
+  top: 4%; /* egy kis felső margó */
 }
 
 /* Bezáró ikon mindig a helyén legyen */

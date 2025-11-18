@@ -1,3 +1,7 @@
+# Titkos adatok
+.env
+
+
 # Logs
 logs
 *.log

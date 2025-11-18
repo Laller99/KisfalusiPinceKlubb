@@ -251,7 +251,7 @@ const OrderForm = ({ cart, total, onOrderSubmit }) => {
             value="card"
             checked={formData.payment === "card"}
             onChange={handleChange}
-          />{" "}
+          />
           Bankkártyás fizetés (átirányítás)
         </label>
         <label>
@@ -261,7 +261,7 @@ const OrderForm = ({ cart, total, onOrderSubmit }) => {
             value="transfer"
             checked={formData.payment === "transfer"}
             onChange={handleChange}
-          />{" "}
+          />
           Előre utalás
         </label>
       </div>
@@ -292,11 +292,11 @@ const OrderForm = ({ cart, total, onOrderSubmit }) => {
 
         <div className="final-summary">
           <h4>
-            Termékek összege:{" "}
+            Termékek összege:
             <span className="highlight-price">{total} Ft</span>
           </h4>
           <h4>
-            Szállítási díj:{" "}
+            Szállítási díj:
             <span className="highlight-price">{shippingFee} Ft</span>
           </h4>
           <h4
@@ -305,7 +305,7 @@ const OrderForm = ({ cart, total, onOrderSubmit }) => {
               paddingTop: 10,
             }}
           >
-            Fizetendő összesen:{" "}
+            Fizetendő összesen:
             <span className="highlight-price">{finalTotal} Ft</span>
           </h4>
         </div>
