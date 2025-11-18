@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import "./AdminPanel.css";
 
-const API_ADMIN_URL = "/api/admin";
+const API_ADMIN_URL = "https://kisfalusipinceklubb.onrender.com/api/admin";
 
 // --- Segéd Komponens: Termék Létrehozó/Szerkesztő Modál ---
 const ProductFormModal = ({ product, onClose, onSuccess, token }) => {

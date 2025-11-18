@@ -137,11 +137,27 @@ async function sendNotificationEmail(orderData, subjectPrefix) {
 // ---------------------------------------------------------------------
 // --- Express Szerver beállítása ---
 // ---------------------------------------------------------------------
-const app = express();
-app.use(express.json());
-// Engedélyezzük a frontendnek a kommunikációt
-app.use(cors({ origin: FRONTEND_URL }));
+const app = express(); // 🔑 AZ APP VÁLTOZÓ DEFINIÁLÁSA ITT TÖRTÉNIK!
 
+app.use(express.json());
+
+// 🔑 JAVÍTOTT CORS BEÁLLÍTÁS: Engedélyezzük az éles és a lokális címet is.
+
+const allowedOrigins = [
+  FRONTEND_URL, // Éles URL (Renderen: FRONTEND_URL környezeti változó)
+
+  "http://localhost:5173", // Lokális React/Front-end fejlesztési URL
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+
+    credentials: true, // Fontos a JWT (Authorization Header) küldéséhez
+  })
+);
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/admin", require("./routes/admin"));
 app.use("/api/user", require("./routes/user"));
