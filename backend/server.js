@@ -269,48 +269,62 @@ app.post("/api/order", protect, async (req, res, next) => {
     } else {
       // --- BANKKÁRTYA / UTÁNVÉT (Nincs külső fizetés) ---
 
-      // 1. Email küldése a tulajdonosnak
-      await sendNotificationEmail(
+      // 1. KÜLDD EL AZONNAL A VÁLASZT A FRONT-ENDNEK!
+      // Ezzel azonnal feloldjuk a felhasználó várakozását.
+      res.status(200).json({
+        message: "Rendelés mentve, visszaigazoló email küldése folyamatban.",
+        action: "success",
+        orderId: orderId, // Visszaküldjük az ID-t
+      });
+
+      // 2. 📧 A VÁSÁRLÓI ÉS TULAJDONOSI EMAIL KÜLDÉSÉT HÍVD A HÁTTÉRBEN!
+      // (NINCS 'await', így a folyamat nem blokkolja a fő szálat)
+
+      // Email küldése a tulajdonosnak
+      sendNotificationEmail(
+        // NINCS AWAIT!
         orderData,
         `Új rendelés (${orderData.paymentMethod})`
       );
 
-      // 2. Email küldése a VÁSÁRLÓNAK
+      // Email küldése a VÁSÁRLÓNAK
       try {
-        await transporter.sendMail({
-          from: `"${SHOP_NAME}" <${EMAIL_USER}>`,
-          to: customerEmail,
-          subject: "Rendelés visszaigazolása",
-          html: customerEmailContent,
-        });
-        console.log(
-          `Visszaigazoló e-mail elküldve a vásárlónak: ${customerEmail}`
-        );
+        transporter
+          .sendMail({
+            // NINCS AWAIT!
+            from: `"${SHOP_NAME}" <${EMAIL_USER}>`,
+            to: customerEmail,
+            subject: "Rendelés visszaigazolása",
+            html: customerEmailContent,
+          })
+          .then(() =>
+            console.log(
+              `Visszaigazoló e-mail elküldve a vásárlónak: ${customerEmail}`
+            )
+          )
+          .catch((emailError) =>
+            console.error(
+              "❌ Hiba a vásárlói visszaigazoló email küldésekor:",
+              emailError
+            )
+          );
       } catch (emailError) {
+        // Ez a catch blokk csak az aszinkron hívás elindításának hibáját kapja el,
+        // a transporter hibaüzenetét már a .catch() kezeli.
         console.error(
-          "❌ Hiba a vásárlói visszaigazoló email küldésekor:",
+          "Kritikus hiba az email küldés elindításakor:",
           emailError
         );
-        // Logoljuk, de nem akadályozza meg a sikeres választ a frontendnek
       }
 
-      // 3. Sikeres válasz a frontendnek
-      return res.status(200).json({
-        message: "Rendelés mentve, visszaigazoló email elküldve.",
-        action: "success",
-        orderId: orderId, // Visszaküldjük az ID-t
-      });
+      // FONTOS: NINCS TOVÁBBI RETURN ITT, mert a válasz már elment (res.status(200).json...)
     }
   } catch (error) {
     console.error("Szerver hiba a rendelés feldolgozásakor:", error);
-    // 🛑 JAVÍTVA: Hiba továbbítása a globális hibakezelőnek
+    // 🛑 A kód elején lévő hiba esetén is lefut a next(error)
     next(error);
   }
 });
-
-/**
- * GET /api/paypal/execute
- */
 app.get("/api/paypal/execute", async (req, res, next) => {
   const { paymentId, PayerID, orderId } = req.query;
 
