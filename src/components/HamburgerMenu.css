@@ -8,8 +8,6 @@
   flex-direction: column;
   gap: 4px; /* Kicsit nagyobb térköz */
   padding: 8px;
-  /* Fontos: A gombot külön kell stílusozni a Header.jsx-ben lévő nav a/button stílusok miatt, 
-     de itt csak az ikon belső részét stílusozzuk. */
 }
 
 .hamburger-menu .icon span {
@@ -25,7 +23,7 @@
 /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
 .dropdown {
   position: absolute;
-  top: 50px;
+  top: 60%;
   right: 0;
   /* Mélybarna háttér */
   background: #2b1b1b;
@@ -84,69 +82,69 @@
 /* ------------------------------------------- */
 
 @media (max-width: 900px) {
-    /* --- HAMBURGER IKON --- */
-    .hamburger-menu .icon {
-        padding: 6px; /* Kisebb térköz */
-    }
+  /* --- HAMBURGER IKON --- */
+  .hamburger-menu .icon {
+    padding: 8px; /* Kisebb térköz */
+  }
 
-    .hamburger-menu .icon span {
-        width: 28px; /* Kisebb szélesség */
-        height: 3px;
-    }
+  .hamburger-menu .icon span {
+    width: 38px; /* Kisebb szélesség */
+    height: 4px;
+  }
 
-    /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
-    .dropdown {
-        top: 45px; /* Magasság igazítása a kisebb fejléc magassághoz */
-        right: 15px; /* Enyhe behúzás az oldal szélétől */
-        min-width: 180px; /* Kissé kisebb minimális szélesség */
-    }
+  /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
+  .dropdown {
+    top: 45px; /* Magasság igazítása a kisebb fejléc magassághoz */
+    right: 15px; /* Enyhe behúzás az oldal szélétől */
+    min-width: 180px; /* Kissé kisebb minimális szélesség */
+  }
 
-    /* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
-    .item,
-    .logout {
-        padding: 10px 14px; /* Kisebb belső térköz */
-        font-size: 0.95em;
-    }
+  /* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
+  .item,
+  .logout {
+    padding: 10px 14px; /* Kisebb belső térköz */
+    font-size: 0.95em;
+  }
 
-    /* --- FELHASZNÁLÓ EMAIL --- */
-    .user-email {
-        font-size: 0.8em;
-        padding: 8px 14px 6px;
-    }
-}/* ------------------------------------------- */
+  /* --- FELHASZNÁLÓ EMAIL --- */
+  .user-email {
+    font-size: 0.8em;
+    padding: 8px 14px 6px;
+  }
+} /* ------------------------------------------- */
 /* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 600px) */
 /* ------------------------------------------- */
 
 @media (max-width: 600px) {
-    /* --- HAMBURGER IKON --- */
-    .hamburger-menu .icon {
-        padding: 4px;
-        gap: 3px;
-    }
+  /* --- HAMBURGER IKON --- */
+  .hamburger-menu .icon {
+    padding: 4px;
+    gap: 7px;
+  }
 
-    .hamburger-menu .icon span {
-        width: 25px; /* Mobilra optimalizált szélesség */
-        height: 2px; /* Vékonyabb vonalak */
-    }
+  .hamburger-menu .icon span {
+    width: 35px; /* Mobilra optimalizált szélesség */
+    height: 2px; /* Vékonyabb vonalak */
+  }
 
-    /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
-    .dropdown {
-        /* A menüt jobban az oldal széléhez igazítjuk */
-        top: 40px; /* Kisebb fejléc miatt igazítva */
-        right: 10px;
-        min-width: 160px; /* Még kisebb minimális szélesség */
-    }
+  /* --- LEGÖRDÜLŐ MENÜ (DROPDOWN) --- */
+  .dropdown {
+    /* A menüt jobban az oldal széléhez igazítjuk */
+    top: 40px; /* Kisebb fejléc miatt igazítva */
+    right: 10px;
+    min-width: 160px; /* Még kisebb minimális szélesség */
+  }
 
-    /* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
-    .item,
-    .logout {
-        padding: 10px 12px;
-        font-size: 0.9em;
-    }
+  /* --- MENÜ ELEMEK (ITEM, LOGOUT) --- */
+  .item,
+  .logout {
+    padding: 10px 12px;
+    font-size: 0.9em;
+  }
 
-    /* --- FELHASZNÁLÓ EMAIL --- */
-    .user-email {
-        font-size: 0.75em;
-        padding: 7px 12px 5px;
-    }
+  /* --- FELHASZNÁLÓ EMAIL --- */
+  .user-email {
+    font-size: 0.75em;
+    padding: 7px 12px 5px;
+  }
 }

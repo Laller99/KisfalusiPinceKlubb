@@ -1,6 +1,5 @@
-// Header.jsx
+// Header.jsx (JAVÍTOTT VÁLTOZAT)
 import React, { useContext, useState } from "react";
-// Importáljuk a Link komponenst, hogy a horgony-navigáció működjön (ScrollToHash.jsx-szel)
 import { Link } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import HamburgerMenu from "./HamburgerMenu";
@@ -15,12 +14,41 @@ export default function Header({
   onUserOrdersClick,
 }) {
   const { user, logout } = useContext(AuthContext);
-  // Állapot a mobil menü nyitott/zárt állapotához
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Funkció a menü váltásához
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  /**
+   * Ez a funkció most már csak a normál Linkekre kattintáskor engedi a menü bezárását,
+   * de megakadályozza, hogy a belső gombok, mint a HamburgerMenu menüje, bezárják a headert.
+   *
+   * @param {React.MouseEvent<HTMLElement>} e
+   */
+  const handleNavClick = (e) => {
+    // 1. Ha a mobil menü zárva van, ne tegyen semmit.
+    if (!isMobileMenuOpen) return;
+
+    // 2. Ellenőrizzük, hogy a kattintás egy <Link>-re történt-e.
+    // Ezt úgy tesszük, hogy megvizsgáljuk, a kattintott elem <A> tag-e, vagy annak gyermeke.
+    const clickedElement = e.target;
+    const isLink =
+      clickedElement.tagName === "A" || clickedElement.closest("a");
+
+    // 3. Ellenőrizzük, hogy a kattintás a HamburgerMenu komponensre történt-e.
+    // Feltételezzük, hogy a HamburgerMenu nem egy Link.
+    // A legegyszerűbb, ha megakadályozzuk, hogy a HamburgerMenu ikon/gomb bezárja a menüt.
+
+    // Annak a biztosítása, hogy a menü bezáródjon a fő navigációs Linkekre kattintva:
+    if (isLink) {
+      // Ha <Link>-re vagy annak tartalmára kattintottunk, akkor zárjuk be a menüt.
+      toggleMobileMenu();
+    }
+
+    // FIGYELEM: A HamburgerMenu-nek (ami a profilt nyitja) a saját kódjában kell
+    // megakadályoznia az eseménybuborékolást (e.stopPropagation())!
+    // Ha nem teszi meg, akkor ez a kezelő is lefuthat. A legbiztosabb a 'HamburgerMenu' komponensen belüli javítás.
   };
 
   return (
@@ -30,7 +58,7 @@ export default function Header({
         <img src="Image/PinceLogo.png" alt="" />
       </div>
 
-      {/* 👈 ÚJ: Hamburger gomb a fő navigációhoz (csak mobilon látszik a CSS szerint) */}
+      {/* 👈 Hamburger gomb (A Fő menü nyitása/zárása) */}
       <button
         className={`hamburger-toggle ${isMobileMenuOpen ? "open" : ""}`}
         onClick={toggleMobileMenu}
@@ -46,12 +74,12 @@ export default function Header({
       {/* 2. Fő navigációs menü */}
       <nav
         id="main-nav"
-        // Hozzáadjuk a 'mobile-open' osztályt, ha nyitva van. A CSS kezeli a megjelenést.
+        // FELTÉTELES KATTINTÁS KEZELÉS: csak akkor fut le, ha a menü nyitva van.
+        // A handleNavClick felel a linkek és egyéb elemek megkülönböztetéséért.
         className={`nav ${isMobileMenuOpen ? "mobile-open" : ""}`}
-        // Ha mobil nézetben linkre kattintanak (ami bezárja a menüt a kattintás után), zárjuk be a menüt
-        onClick={() => isMobileMenuOpen && toggleMobileMenu()}
+        onClick={handleNavClick} // 👈 Az új handler
       >
-        {/* HASZNÁLD A <Link> KOMPONENSEKET a ScrollToHash-sal való együttműködéshez */}
+        {/* HASZNÁLD A <Link> KOMPONENSEKET */}
         <Link to="/#hero">Kezdőlap</Link>
         <Link to="/#award-wines">Díjnyertes borok</Link>
         <Link to="/#rolunk">Rólunk</Link>
@@ -61,12 +89,18 @@ export default function Header({
         {/* 3. Autentikációs elemek */}
         {!user && <button onClick={onLoginClick}>Log in</button>}
 
-        {/* ⚠️ FONTOS: onOrdersClick prop továbbítása */}
+        {/* ⚠️ FONTOS: HamburgerMenu komponens: 
+           Ha a HamburgerMenu egy lenyitható menü, annak a NYITÓ GOMBJÁN 
+           BELÜL KELL E.STOPPROPAGATION()-t használni, hogy ne érje el a nav-ot!
+        */}
         {!!user && (
           <HamburgerMenu
             onProfileClick={onProfileClick}
             onAdminClick={onAdminClick}
-            onUserOrdersClick={onUserOrdersClick} // Ezt hívja a "Rendeléseim" menüpont
+            onUserOrdersClick={onUserOrdersClick}
+            // 💡 Javasolt: A HamburgerMenu-t magát is be kell zárni, miután kiválasztottak egy opciót!
+            // Az opció kiválasztása után zárni kell a fő mobil menüt is (toggleMobileMenu hívása).
+            // Ezt jelenleg nem teszi meg, de a Linkek sem teszik meg (mivel a Link a handleNavClick-en keresztül zár).
           />
         )}
       </nav>

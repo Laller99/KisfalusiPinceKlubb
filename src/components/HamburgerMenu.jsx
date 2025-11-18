@@ -1,12 +1,9 @@
-// HamburgerMenu.jsx
-
-// components/HamburgerMenu.jsx
+// components/HamburgerMenu.jsx (JAVÍTVA: A menü nyitva marad az akciók után)
 
 import React, { useState, useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import "./HamburgerMenu.css";
 
-// ⚠️ JAVÍTÁS: Fogadja az onOrdersClick propot
 export default function HamburgerMenu({
   onProfileClick,
   onAdminClick,
@@ -15,50 +12,65 @@ export default function HamburgerMenu({
   const [open, setOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
 
-  // Segédfüggvény a menü bezárásához és az akció elindításához
-  const handleItemClick = (actionFunction) => {
+  // ⚠️ JAVÍTÁS: Eltávolítva a setOpen(false); a menü nyitva tartásához.
+  const handleItemClick = (actionFunction, e) => {
+    // 💡 FONTOS: Megakadályozzuk, hogy a kattintás tovább buborékoljon a Header.jsx-ben lévő nav-ra.
+    // Így elkerüljük, hogy a fő mobil menü bezáródjon.
+    e.stopPropagation();
     actionFunction();
-    setOpen(false); // Bezárja a menüt
+    // setOpen(false); <- EZ HIÁNYZIK MOST! A menü NYITVA MARAD.
   };
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.stopPropagation(); // Buborékolás megállítása
     logout();
-    setOpen(false);
+    setOpen(false); // Kijelentkezéskor bezárjuk a menüt
+  };
+
+  // A HamburgerMenu nyitó ikonjának kezelője
+  const handleIconClick = (e) => {
+    e.stopPropagation(); // Fontos: Megakadályozzuk a fő nav bezárását, ha rákattintunk
+    setOpen((v) => !v);
   };
 
   // Menü elemek role szerint (egyszerűsítve)
   const menuItems =
     user.role === "admin"
       ? [
-          // Admin jogosultság esetén csak egy fő Admin Panel link van
           {
             label: "🔧 Admin Panel",
             onClick: onAdminClick,
           },
         ]
       : [
-          // A normál felhasználónak a Rendeléseim opciót biztosítjuk
           {
             label: "📦 Rendeléseim",
-            onClick: onUserOrdersClick, // ⚠️ MEGHÍVJA A RENDELÉSEIM FUNKCIÓT
+            onClick: onUserOrdersClick,
           },
         ];
 
   return (
     <div className="hamburger-menu">
-      <button className="icon" onClick={() => setOpen((v) => !v)}>
+      <button className="icon" onClick={handleIconClick}>
+        {" "}
+        {/* 👈 Az új handler */}
         <span />
         <span />
         <span />
       </button>
       {open && (
-        <div className="dropdown">
+        // 💡 JAVÍTÁS: A lenyíló területre is érdemes tenni stopPropagationt,
+        // hogy a menü területére kattintás ne zárja be a fő mobil menüt.
+        <div className="dropdown" onClick={(e) => e.stopPropagation()}>
           <div className="user-email">
             {user.email} ({user.role})
           </div>
 
           {/* 1. PROFIL GOMB */}
-          <div className="item" onClick={() => handleItemClick(onProfileClick)}>
+          <div
+            className="item"
+            onClick={(e) => handleItemClick(onProfileClick, e)} // 👈 e.stopPropagation() bevezetése
+          >
             👤 Profilom
           </div>
 
@@ -67,7 +79,7 @@ export default function HamburgerMenu({
             <div
               key={i}
               className="item"
-              onClick={() => handleItemClick(item.onClick)}
+              onClick={(e) => handleItemClick(item.onClick, e)} // 👈 e.stopPropagation() bevezetése
             >
               {item.label}
             </div>
@@ -75,6 +87,8 @@ export default function HamburgerMenu({
 
           {/* 3. KIJELENTKEZÉS */}
           <div className="logout" onClick={handleLogout}>
+            {" "}
+            {/* 👈 handleLogout használata */}
             ➡️ Kijelentkezés
           </div>
         </div>
