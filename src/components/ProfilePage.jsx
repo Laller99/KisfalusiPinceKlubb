@@ -4,7 +4,7 @@ import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../contexts/AuthContext";
 import "./ProfilePage.css";
 
-const API_USER_URL = "/api/user";
+const API_USER_URL = "https://kisfalusipinceklubb.onrender.com/api/user";
 
 // 🔑 JAVÍTVA: Hozzáadtuk az onViewOrders propot a nézetváltáshoz
 export default function ProfilePage({ onClose, onViewOrders }) {
