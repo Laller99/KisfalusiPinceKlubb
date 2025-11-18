@@ -5,7 +5,10 @@ const Product = require("../models/Product");
 // Összes rendelés listázása
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("userId", "email");
+    // 🔑 MÓDOSÍTÁS: Szűrés, ahol a státusz NEM "Teljesítve"
+    const orders = await Order.find({ status: { $ne: "Teljesítve" } })
+      .populate("userId", "email")
+      .sort({ createdAt: -1 }); // Legújabb felül
     res.json(orders);
   } catch (err) {
     res.status(500).json({ error: "Nem lehet lekérni a rendeléseket!" });

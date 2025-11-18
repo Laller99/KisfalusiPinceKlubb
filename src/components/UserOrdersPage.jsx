@@ -58,7 +58,7 @@ export default function UserOrdersPage({ onClose }) {
           &times;
         </div>
 
-        <h2>📦 Rendeléseim ({orders.length})</h2>
+        <h2>📦 Rendeléseim</h2>
 
         {loading && <p>Betöltés...</p>}
         {error && <p className="error">{error}</p>}

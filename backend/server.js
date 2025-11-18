@@ -4,7 +4,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 const { MongoClient, ObjectId } = require("mongodb");
 const paypal = require("paypal-rest-sdk");
 const mongoose = require("mongoose");
@@ -14,13 +14,11 @@ const { authMiddleware: protect } = require("./middleware/authMiddleware");
 
 // 2. Környezeti változók beolvasása
 const {
-  EMAIL_HOST,
-  EMAIL_PORT,
   EMAIL_USER,
-  EMAIL_PASS,
   OWNER_EMAIL,
   MONGO_URI,
   MONGO_DB_NAME,
+  SENDGRID_API_KEY,
   PAYPAL_MODE,
   PAYPAL_CLIENT_ID,
   PAYPAL_SECRET,
@@ -60,12 +58,8 @@ mongoose
   .catch((err) => console.error("❌ Hiba a Mongoose csatlakozáskor:", err));
 
 // --- Nodemailer Transporter ---
-const transporter = nodemailer.createTransport({
-  host: EMAIL_HOST,
-  port: EMAIL_PORT,
-  secure: false,
-  auth: { user: EMAIL_USER, pass: EMAIL_PASS },
-});
+sgMail.setApiKey(SENDGRID_API_KEY);
+console.log("✅ SendGrid API kulcs beállítva.");
 
 // ---------------------------------------------------------------------
 // --- SEGÉDFÜGGVÉNYEK ---
@@ -114,23 +108,27 @@ function createCustomerEmailContent(order) {
         <p>Hamarosan értesítünk, amint a csomag útnak indul.</p>
     `;
 }
-
 /**
  * Segédfüggvény: Értesítő email küldése a webshop tulajdonosának.
  */
 async function sendNotificationEmail(orderData, subjectPrefix) {
   const mailOptions = {
-    from: EMAIL_USER,
     to: OWNER_EMAIL,
+    from: EMAIL_USER, // A SendGridnél hitelesített feladó e-mail címe
     subject: `${subjectPrefix} - Vevő: ${
       orderData.customer.name || "Ismeretlen vevő"
     }`,
     html: createOrderEmailContent(orderData),
   };
   try {
-    await transporter.sendMail(mailOptions);
+    // 🔑 Nodemailer helyett SendGrid
+    await sgMail.send(mailOptions);
   } catch (error) {
-    console.error("❌ Hiba az értesítő email küldésekor:", error);
+    // Külön logolja a SendGrid hiba részleteit
+    console.error("❌ Hiba az értesítő email küldésekor (SendGrid):", error);
+    if (error.response) {
+      console.error(error.response.body);
+    }
   }
 }
 
@@ -269,55 +267,42 @@ app.post("/api/order", protect, async (req, res, next) => {
     } else {
       // --- BANKKÁRTYA / UTÁNVÉT (Nincs külső fizetés) ---
 
-      // 1. KÜLDD EL AZONNAL A VÁLASZT A FRONT-ENDNEK!
-      // Ezzel azonnal feloldjuk a felhasználó várakozását.
-      res.status(200).json({
-        message: "Rendelés mentve, visszaigazoló email küldése folyamatban.",
-        action: "success",
-        orderId: orderId, // Visszaküldjük az ID-t
-      });
-
-      // 2. 📧 A VÁSÁRLÓI ÉS TULAJDONOSI EMAIL KÜLDÉSÉT HÍVD A HÁTTÉRBEN!
-      // (NINCS 'await', így a folyamat nem blokkolja a fő szálat)
+      // 1. 📧 A VÁSÁRLÓI ÉS TULAJDONOSI EMAIL KÜLDÉSÉT MOST MÁR MEG KELL VÁRNUNK (await)!
 
       // Email küldése a tulajdonosnak
-      sendNotificationEmail(
-        // NINCS AWAIT!
+      await sendNotificationEmail(
+        // 👈 Visszatesszük az AWAIT-et
         orderData,
         `Új rendelés (${orderData.paymentMethod})`
       );
 
       // Email küldése a VÁSÁRLÓNAK
+      const customerEmail = orderData.customer.email;
       try {
-        transporter
-          .sendMail({
-            // NINCS AWAIT!
-            from: `"${SHOP_NAME}" <${EMAIL_USER}>`,
-            to: customerEmail,
-            subject: "Rendelés visszaigazolása",
-            html: customerEmailContent,
-          })
-          .then(() =>
-            console.log(
-              `Visszaigazoló e-mail elküldve a vásárlónak: ${customerEmail}`
-            )
-          )
-          .catch((emailError) =>
-            console.error(
-              "❌ Hiba a vásárlói visszaigazoló email küldésekor:",
-              emailError
-            )
-          );
+        await sgMail.send({
+          // 👈 Visszatesszük az AWAIT-et
+          from: `"${SHOP_NAME}" <${EMAIL_USER}>`,
+          to: customerEmail,
+          subject: "Rendelés visszaigazolása",
+          html: customerEmailContent,
+        });
+        console.log(
+          `Visszaigazoló e-mail elküldve a vásárlónak: ${customerEmail}`
+        );
       } catch (emailError) {
-        // Ez a catch blokk csak az aszinkron hívás elindításának hibáját kapja el,
-        // a transporter hibaüzenetét már a .catch() kezeli.
         console.error(
-          "Kritikus hiba az email küldés elindításakor:",
+          "❌ Kritikus hiba a vásárlói visszaigazoló email küldésekor:",
           emailError
         );
+        // Itt dönthetünk, hogy tovább engedjük a kérést, de a logolás a legfontosabb.
       }
 
-      // FONTOS: NINCS TOVÁBBI RETURN ITT, mert a válasz már elment (res.status(200).json...)
+      // 2. KÜLDD EL A VÁLASZT A FRONT-ENDNEK CSAK AZ E-MAIL KÜLDÉSE UTÁN!
+      res.status(200).json({
+        message: "Rendelés mentve, visszaigazoló email sikeresen elküldve.",
+        action: "success",
+        orderId: orderId,
+      });
     }
   } catch (error) {
     console.error("Szerver hiba a rendelés feldolgozásakor:", error);
@@ -401,7 +386,7 @@ app.get("/api/paypal/execute", async (req, res, next) => {
         const customerEmailContent = createCustomerEmailContent(orderData);
         const customerEmail = orderData.customer.email;
         try {
-          await transporter.sendMail({
+          await sgMail.send({
             from: `"${SHOP_NAME}" <${EMAIL_USER}>`,
             to: customerEmail,
             subject: "Rendelés visszaigazolása (Fizetve)",

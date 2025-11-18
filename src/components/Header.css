@@ -118,7 +118,8 @@
 
   /* 2. Header finomhangolása asztalon (ha szükséges) */
   .header {
-    background-color: rgba(255, 255, 255, 0); /* Félátlátszó fehér */
+    background-color: rgba(255, 255, 255, 0);
+    margin-top:; /* Félátlátszó fehér */
   }
 
   /* 3. Navigáció megjelenítése (horizontális) */
@@ -126,8 +127,9 @@
     display: flex;
     position: static;
     flex-direction: row;
-    align-items: center;
+    margin-top: 2%;
     width: auto;
+    height: 30px;
     box-shadow: none;
     background-color: transparent;
   }
@@ -137,7 +139,6 @@
   .nav button {
     padding: 0 0.8rem;
     width: auto;
-    text-align: center;
     border-bottom: none;
     color: #f1ecec;
     font-weight: 600;

@@ -31,7 +31,7 @@ const ProductFormModal = ({ product, onClose, onSuccess, token }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(form),
-        cache: "no-cache", // ⚠️ JAVÍTÁS: Caching kikapcsolása a szerkesztés/létrehozás utáni frissítéshez
+        cache: "no-cache",
       });
 
       const data = await res.json();
@@ -110,9 +110,11 @@ const ProductFormModal = ({ product, onClose, onSuccess, token }) => {
 // --- FŐ KOMPONENS: ADMIN PANEL ---
 export default function AdminPanel({ onClose }) {
   const { user } = useContext(AuthContext);
-  const [view, setView] = useState("products"); // products | orders
+  const [view, setView] = useState("products"); // products | orders | users
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  // 🔑 ÚJ ÁLLAPOT: Felhasználók tárolására
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -129,10 +131,16 @@ export default function AdminPanel({ onClose }) {
     setError(null);
 
     try {
-      const endpoint = view === "products" ? "products" : "orders";
+      const endpoint =
+        view === "products"
+          ? "products"
+          : view === "orders"
+          ? "orders"
+          : "users"; // 🔑 ÚJ: Felhasználók endpoint
+
       const res = await fetch(`${API_ADMIN_URL}/${endpoint}`, {
         headers: { Authorization: `Bearer ${user.token}` },
-        cache: "no-cache", // ⚠️ JAVÍTÁS: Ezzel kikapcsoljuk a gyorsítótárazást a GET kéréseknél
+        cache: "no-cache",
       });
 
       const data = await res.json();
@@ -140,8 +148,11 @@ export default function AdminPanel({ onClose }) {
 
       if (view === "products") {
         setProducts(data);
-      } else {
+      } else if (view === "orders") {
         setOrders(data);
+      } else if (view === "users") {
+        // 🔑 ÚJ: Felhasználók beállítása
+        setUsers(data);
       }
     } catch (err) {
       setError(err.message);
@@ -157,7 +168,7 @@ export default function AdminPanel({ onClose }) {
       const res = await fetch(`${API_ADMIN_URL}/products/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.token}` },
-        cache: "no-cache", // JAVÍTÁS
+        cache: "no-cache",
       });
       if (res.ok) {
         fetchData();
@@ -180,7 +191,7 @@ export default function AdminPanel({ onClose }) {
           Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({ status: newStatus }),
-        cache: "no-cache", // JAVÍTÁS
+        cache: "no-cache",
       });
       if (res.ok) {
         fetchData();
@@ -193,11 +204,65 @@ export default function AdminPanel({ onClose }) {
     }
   };
 
+  // 🔑 ÚJ: Felhasználó szerepkörének módosítása
+  const updateUserRole = async (userId, newRole) => {
+    // Admin nem módosíthatja saját szerepkörét
+    if (userId === user.id) {
+      alert("Nem módosíthatod saját szerepkörödet.");
+      return;
+    }
+    try {
+      const res = await fetch(`${API_ADMIN_URL}/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ role: newRole }), // Csak a role-t küldjük
+        cache: "no-cache",
+      });
+      if (res.ok) {
+        fetchData();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Szerepkör frissítési hiba.");
+      }
+    } catch (err) {
+      console.error("Szerepkör frissítési hiba:", err);
+    }
+  };
+
+  // 🔑 ÚJ: Felhasználó törlése
+  const deleteUser = async (userId) => {
+    if (userId === user.id) {
+      alert("Nem törölheted saját magadat!");
+      return;
+    }
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?"))
+      return;
+
+    try {
+      const res = await fetch(`${API_ADMIN_URL}/users/${userId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${user.token}` },
+        cache: "no-cache",
+      });
+      if (res.ok) {
+        fetchData();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Felhasználó törlési hiba.");
+      }
+    } catch (err) {
+      console.error("Felhasználó törlési hiba:", err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [view, user.token]);
 
-  // Modal kezelők
+  // Modal kezelők (Változatlanul hagyva)
   const openCreateModal = () => {
     setCurrentProduct(null);
     setIsProductModalOpen(true);
@@ -208,7 +273,7 @@ export default function AdminPanel({ onClose }) {
   };
   const handleModalSuccess = () => {
     setIsProductModalOpen(false);
-    fetchData(); // Frissíti az adatokat
+    fetchData();
   };
   const handleModalClose = () => {
     setIsProductModalOpen(false);
@@ -252,7 +317,14 @@ export default function AdminPanel({ onClose }) {
             className={view === "orders" ? "active" : ""}
             onClick={() => setView("orders")}
           >
-            Rendelések ({orders.length})
+            Rendelések
+          </button>
+          {/* 🔑 ÚJ NAVIGÁCIÓS GOMB */}
+          <button
+            className={view === "users" ? "active" : ""}
+            onClick={() => setView("users")}
+          >
+            Felhasználók ({users.length})
           </button>
         </div>
 
@@ -283,7 +355,6 @@ export default function AdminPanel({ onClose }) {
                     {products.map((p) => (
                       <tr key={p._id}>
                         <td>{p.name}</td>
-                        {/* Itt is biztonsági ellenőrzés, ha a 'price' hiányozna */}
                         <td>{(p.price || 0).toLocaleString("hu-HU")} Ft</td>
                         <td>{p.stock} db</td>
                         <td>
@@ -308,9 +379,9 @@ export default function AdminPanel({ onClose }) {
           {/* --- 2. RENDELÉSEK NÉZET --- */}
           {view === "orders" && (
             <div className="order-management">
-              <h3>Rendelések</h3>
+              <h3>Folyamatban lévő Rendelések </h3>
               {orders.length === 0 && !loading && !error && (
-                <p>Nincsenek megjeleníthető rendelések.</p>
+                <p>Nincsenek folyamatban lévő rendelések.</p>
               )}
 
               {orders.length > 0 && (
@@ -328,9 +399,7 @@ export default function AdminPanel({ onClose }) {
                     {orders.map((o) => (
                       <tr key={o._id}>
                         <td>{o._id.substring(0, 5)}...</td>
-                        {/* 🛑 JAVÍTÁS: Valószínűleg a 'customer.email' mező szükséges, nem 'userId.email' */}
                         <td>{o.customer?.email || "Ismeretlen"}</td>
-                        {/* 🛑 JAVÍTÁS: Az undefined hiba megoldása a 'toLocaleString'-nál */}
                         <td>
                           {(o.totalPrice || 0).toLocaleString("hu-HU")} Ft
                         </td>
@@ -352,6 +421,62 @@ export default function AdminPanel({ onClose }) {
                             <option value="Teljesítve">Teljesítve</option>
                             <option value="Sztornózva">Sztornózva</option>
                           </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+
+          {/* --- 3. FELHASZNÁLÓK NÉZET --- */}
+          {view === "users" && (
+            <div className="user-management">
+              <h3>Felhasználók kezelése</h3>
+              {users.length === 0 && !loading && !error && (
+                <p>Nincsenek regisztrált felhasználók.</p>
+              )}
+
+              {users.length > 0 && (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID:</th>
+                      <th>E-mail:</th>
+                      <th>Szerepkör:</th>
+                      <th>Műveletek:</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((u) => (
+                      <tr key={u._id}>
+                        <td>{u._id.substring(0, 5)}...</td>
+                        <td>{u.email}</td>
+                        <td>
+                          <select
+                            value={u.role}
+                            // 🔑 MÓDOSÍTÁS: Szerepkör frissítése
+                            onChange={(e) =>
+                              updateUserRole(u._id, e.target.value)
+                            }
+                            // Az admin nem módosíthatja saját szerepkörét
+                            disabled={u._id === user.id}
+                          >
+                            <option value="user">Vásárló</option>
+                            <option value="admin">Adminisztrátor</option>
+                          </select>
+                        </td>
+                        <td>
+                          <button
+                            className="delete"
+                            // 🔑 MÓDOSÍTÁS: Törlés
+                            onClick={() => deleteUser(u._id)}
+                            // Az admin nem törölheti magát
+                            disabled={u._id === user.id}
+                          >
+                            Törlés
+                          </button>
                         </td>
                       </tr>
                     ))}

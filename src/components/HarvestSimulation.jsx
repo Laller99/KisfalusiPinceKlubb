@@ -56,6 +56,8 @@ const HarvestSimulation = () => {
   const [bottledCount, setBottledCount] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
 
+  // Az onDragEnd esemény a Framer Motion-ben a touchmove/touchend eseményeket is kezeli.
+  // Így a handleGrapeToBasket és handleBasketToVat függvények változatlanok maradnak.
   const handleGrapeToBasket = () => {
     setGrapeInBasket(true);
     setTimeout(() => setCurrentStep(2), 800);
@@ -66,7 +68,10 @@ const HarvestSimulation = () => {
     setTimeout(() => setCurrentStep(3), 800);
   };
 
-  const handleCrushClick = () => {
+  const handleCrushClick = (e) => {
+    // Megelőzzük, hogy az 'onClick' és a 'onTouchStart' kétszer fusson
+    if (e) e.stopPropagation();
+
     if (currentStep === 3) {
       const newClicks = crushClicks + 1;
       setCrushClicks(newClicks);
@@ -76,7 +81,9 @@ const HarvestSimulation = () => {
     }
   };
 
-  const handleBarrelCheck = () => {
+  const handleBarrelCheck = (e) => {
+    if (e) e.stopPropagation();
+
     if (currentStep === 4) {
       const newChecks = barrelChecks + 1;
       setBarrelChecks(newChecks);
@@ -86,7 +93,9 @@ const HarvestSimulation = () => {
     }
   };
 
-  const handleBottleClick = (bottleIndex) => {
+  const handleBottleClick = (bottleIndex, e) => {
+    if (e) e.stopPropagation();
+
     if (currentStep === 5 && bottledCount === bottleIndex) {
       const newCount = bottledCount + 1;
       setBottledCount(newCount);
@@ -360,6 +369,8 @@ const HarvestSimulation = () => {
               currentStep === 3 ? "clickable crush-active" : "disabled"
             }`}
             onClick={handleCrushClick}
+            // 👈 JAVÍTÁS: Touch esemény hozzáadása mobilon
+            onTouchStart={handleCrushClick}
             whileHover={currentStep === 3 ? { scale: 1.05 } : {}}
             whileTap={currentStep === 3 ? { scale: 0.95 } : {}}
           >
@@ -416,6 +427,8 @@ const HarvestSimulation = () => {
               currentStep === 4 ? "clickable barrel-active" : "disabled"
             }`}
             onClick={handleBarrelCheck}
+            // 👈 JAVÍTÁS: Touch esemény hozzáadása mobilon
+            onTouchStart={handleBarrelCheck}
             whileHover={currentStep === 4 ? { scale: 1.05 } : {}}
             whileTap={currentStep === 4 ? { scale: 0.95 } : {}}
           >
@@ -475,7 +488,8 @@ const HarvestSimulation = () => {
                   initial={{ y: -50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.2 }}
-                  onClick={() => handleBottleClick(i)}
+                  onClick={(e) => handleBottleClick(i, e)} // 👈 Módosítva: Esemény továbbítása
+                  onTouchStart={(e) => handleBottleClick(i, e)} // 👈 JAVÍTÁS: Touch esemény hozzáadása
                   className={`bottle-item ${
                     currentStep === 5 && bottledCount === i ? "clickable" : ""
                   }`}
