@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
     setLoading(false); // Befejeződött a token ellenőrzése
   }, []); // Csak egyszer fut le, a komponens mount-olásakor
 
-  const API_URL = process.env.REACT_APP_API_URL; // ⚡ IDE KELL BEÉPÍTENI
+  const API_URL = "https://kisfalusipinceklubb.onrender.com"; // ⚡ IDE KELL BEÉPÍTENI
 
   // Token alapú bejelentkezés API-hoz kötve
   async function login(email, password) {
