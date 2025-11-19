@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react"; // 🚨 useEffect importálva
+import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../contexts/AuthContext";
 import "./AuthModal.css";
 
@@ -78,10 +78,8 @@ export default function AuthModal({ show, onClose }) {
             <span
               className="password-toggle"
               onClick={togglePasswordVisibility}
-              onTouchStart={(e) => {
-                e.preventDefault(); // Megakadályozza a fókusz elvesztését mobilon
-                togglePasswordVisibility();
-              }}
+              // ❌ JAVÍTÁS: Eltávolítva a touchstart eseménykezelő, ami az e.preventDefault() miatt hosszan nyomott érzetet adott mobilon.
+              // A natív onClick mostantól megfelelően kezeli a gyors érintést.
               role="button"
               aria-label={showPassword ? "Jelszó elrejtése" : "Jelszó mutatása"}
             >
@@ -136,10 +134,7 @@ export default function AuthModal({ show, onClose }) {
             <span
               className="password-toggle"
               onClick={togglePasswordVisibility}
-              onTouchStart={(e) => {
-                e.preventDefault();
-                togglePasswordVisibility();
-              }}
+              // ❌ JAVÍTÁS: Eltávolítva a touchstart eseménykezelő.
               role="button"
               aria-label={showPassword ? "Jelszó elrejtése" : "Jelszó mutatása"}
             >

@@ -67,10 +67,10 @@ const HarvestSimulation = () => {
     setTimeout(() => setCurrentStep(3), 800);
   };
 
-  // 🛠 JAVÍTÁS: Korlátozás hozzáadása és stopPropagation biztosítása
+  // 🛠 JAVÍTÁS: Visszaállítottuk a clicket és hozzáadtuk az e.preventDefault-et a dupla események elkerüléséhez
   const handleCrushClick = (e) => {
-    // Mobil böngészők esetén a touchend esemény után a click is elsül.
-    // Az esemény terjedésének megállítása segít.
+    // ❗️ JAVÍTÁS: Megakadályozza, hogy mobilon a touch után click is elsüljön.
+    if (e && e.type === "touchstart") e.preventDefault();
     if (e) e.stopPropagation();
 
     if (currentStep === 3 && crushClicks < 20) {
@@ -86,8 +86,10 @@ const HarvestSimulation = () => {
     }
   };
 
-  // 🛠 JAVÍTÁS: Korlátozás hozzáadása
+  // 🛠 JAVÍTÁS: Visszaállítottuk a clicket és hozzáadtuk az e.preventDefault-et
   const handleBarrelCheck = (e) => {
+    // ❗️ JAVÍTÁS: Megakadályozza, hogy mobilon a touch után click is elsüljön.
+    if (e && e.type === "touchstart") e.preventDefault();
     if (e) e.stopPropagation();
 
     if (currentStep === 4 && barrelChecks < 15) {
@@ -102,8 +104,10 @@ const HarvestSimulation = () => {
     }
   };
 
-  // 🛠 JAVÍTÁS: Korlátozás hozzáadása
+  // 🛠 JAVÍTÁS: Visszaállítottuk a clicket és hozzáadtuk az e.preventDefault-et
   const handleBottleClick = (bottleIndex, e) => {
+    // ❗️ JAVÍTÁS: Megakadályozza, hogy mobilon a touch után click is elsüljön.
+    if (e && e.type === "touchstart") e.preventDefault();
     if (e) e.stopPropagation();
 
     if (currentStep === 5 && bottledCount === bottleIndex && bottledCount < 3) {
@@ -382,8 +386,9 @@ const HarvestSimulation = () => {
             className={`card step-vat-crush ${
               currentStep === 3 ? "clickable crush-active" : "disabled"
             }`}
+            // ✅ Visszaállítva a click a desktop működéshez
             onClick={handleCrushClick}
-            // 🛠 JAVÍTÁS: Touch esemény hozzáadása
+            // ✅ Megtartva a touchstart a mobil működéshez (a prevDefault védi a duplázástól)
             onTouchStart={handleCrushClick}
             whileHover={currentStep === 3 ? { scale: 1.05 } : {}}
             whileTap={currentStep === 3 ? { scale: 0.95 } : {}}
@@ -440,8 +445,9 @@ const HarvestSimulation = () => {
             className={`card step-barrel ${
               currentStep === 4 ? "clickable barrel-active" : "disabled"
             }`}
+            // ✅ Visszaállítva a click a desktop működéshez
             onClick={handleBarrelCheck}
-            // 🛠 JAVÍTÁS: Touch esemény hozzáadása
+            // ✅ Megtartva a touchstart a mobil működéshez
             onTouchStart={handleBarrelCheck}
             whileHover={currentStep === 4 ? { scale: 1.05 } : {}}
             whileTap={currentStep === 4 ? { scale: 0.95 } : {}}
@@ -502,8 +508,9 @@ const HarvestSimulation = () => {
                   initial={{ y: -50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.2 }}
+                  // ✅ Visszaállítva a click a desktop működéshez
                   onClick={(e) => handleBottleClick(i, e)}
-                  // 🛠 JAVÍTÁS: Touch esemény hozzáadása
+                  // ✅ Megtartva a touchstart a mobil működéshez
                   onTouchStart={(e) => handleBottleClick(i, e)}
                   className={`bottle-item ${
                     currentStep === 5 && bottledCount === i ? "clickable" : ""
