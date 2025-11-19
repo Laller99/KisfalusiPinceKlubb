@@ -22,20 +22,6 @@ export default function ProfilePage({ onClose, onViewOrders }) {
     oldPassword: "",
     newPassword: "",
   });
-
-  // 🔑 ÚJ LOGIKA: Görgetés letiltása és visszaállítása a modal nyitásakor/zárásakor
-  useEffect(() => {
-    // Ha a komponens látható (azaz nem null-t ad vissza a render)
-    if (user) {
-      document.body.classList.add("modal-open");
-    }
-
-    // Tisztító függvény: Ez fut le, mielőtt a komponens eltűnik (unmount)
-    return () => {
-      document.body.classList.remove("modal-open");
-    };
-  }, [user]); // Futáskor és eltűnéskor, a user meglétét használjuk triggerként
-
   // Profil adatainak lekérése
   const fetchProfile = async () => {
     if (!user) return;
