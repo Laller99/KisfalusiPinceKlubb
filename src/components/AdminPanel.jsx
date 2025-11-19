@@ -121,6 +121,19 @@ export default function AdminPanel({ onClose }) {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
 
+  // 🔑 ÚJ LOGIKA: Görgetés letiltása és visszaállítása
+  useEffect(() => {
+    // Ha a felhasználó admin és a panel látható
+    if (user && user.role === "admin") {
+      document.body.classList.add("modal-open");
+    }
+
+    // Tisztító függvény: Ez fut le, mielőtt a komponens eltűnik (unmount)
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [user]); // Futáskor és eltűnéskor, a user meglétét/admin szerepét használjuk triggerként
+
   // ----------------------------------------------------
   // API HÍVÁSOK
   // ----------------------------------------------------

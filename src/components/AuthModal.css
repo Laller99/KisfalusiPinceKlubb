@@ -22,6 +22,69 @@
   position: relative;
 }
 
+/* --------------------------------------------------------------------- */
+/* --- ÚJ: GÖRGETÉS LETILTÁSA --- */
+/* --------------------------------------------------------------------- */
+
+/* Amikor a modal nyitva van, ez az osztály kerül a <body> elemre */
+body.modal-open {
+  /* Megakadályozza a görgetősáv megjelenését és a görgetést */
+  overflow: hidden; 
+  
+  /* Ez a kiegészítő beállítás segít mobil eszközökön is */
+  position: fixed; 
+  width: 100%;
+}
+/* --------------------------------------------------------------------- */
+/* --- ÚJ: JELSZÓ LÁTHATÓSÁG KAPCSOLÓ STÍLUSOK --- */
+/* --------------------------------------------------------------------- */
+
+/* Konténer a beviteli mező és az ikon pozícionálásához */
+.password-container {
+  /* Alapértelmezett beállítás, ami a modal-side input-jához hasonló margót biztosít */
+  margin-bottom: 15px; 
+  position: relative; /* Kritikus a belső ikon abszolút pozícionálásához */
+  width: 100%;
+}
+
+/* * A beviteli mező stílusának felülírása a konténerből, 
+ * hogy csak a konténer feleljen a margóért.
+ */
+.password-container input {
+  margin-bottom: 0; /* A konténer veszi át a margót, itt nullázzuk */
+}
+
+/* Jelszó váltó ikon */
+.password-toggle {
+  /* Abszolút pozícionálás a .password-container-hez képest */
+  position: absolute;
+  top: 40%;
+  right: 15px; /* Térköz a jobb oldalon */
+  transform: translateY(-50%);
+  cursor: pointer;
+  
+  /* Stílusok az ikonhoz */
+  color: #d4b68a; /* Arany szín */
+  font-size: 1.2em;
+  transition: color 0.2s;
+  user-select: none; /* Megakadályozza a kijelölést */
+  
+  /* Biztosítja, hogy az ikon érinthető legyen mobilon */
+  width: 20px; 
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle:hover {
+  color: #faf7f3; /* Világos krémszín hoverre */
+}
+
+/* Ha szükség van rá, média lekérdezésekben is korrigálni kell a méreteket, 
+   de az alapvető pozícionálás helyes minden felbontáson. 
+   (A mobilon használt onTouchStart a JSX-ben már kezeli az érintést.) */
+
 /* --- MODAL OLDALAK ALAP STÍLUSA --- */
 .modal-side {
   /* Sötét háttér, arany keret */
@@ -117,15 +180,18 @@
 
 /* --- BEZÁRÁS GOMB --- */
 .modal-close {
+  /* 🛠 JAVÍTÁS: Position beállítása ABSOLUTE-ra */
   position: absolute;
-  top: 15px;
+  top: 20px;
   right: 18px;
-  font-size: 2.8rem;
+  font-size: 4rem;
   /* Aranyozott szín a szürke helyett */
   color: #d4b68a;
   cursor: pointer;
   user-select: none;
   transition: color 0.2s;
+  /* Fontos: magas z-index, hogy felül legyen minden más tartalom felett! */
+  z-index: 10;
 }
 .modal-close:hover {
   color: #faf7f3; /* Hoverre világos krémszín */
@@ -182,7 +248,7 @@
   .modal-card {
     width: 350px; /* Kissé szűkebb kártya */
     height: 480px;
-    margin-top: 40%; /* Kisebb magasság */
+    /* A tablet méretben hagytam a vertikális igazítást center-ben */
   }
 
   /* --- MODAL OLDALAK ALAP STÍLUSA --- */
@@ -213,7 +279,9 @@
 
   /* --- BEZÁRÁS GOMB --- */
   .modal-close {
-    top: 10px;
+    /* 🛠 JAVÍTÁS: Position beállítása ABSOLUTE-ra */
+    position: absolute;
+    top: 20px;
     right: 12px;
     font-size: 2.2rem; /* Kisebb X ikon */
   }
@@ -223,7 +291,8 @@
     margin-top: 20px;
     font-size: 0.9em;
   }
-} /* ------------------------------------------- */
+}
+/* ------------------------------------------- */
 /* 2. MOBIL KÉSZÜLÉKEK (Max Szélesség: 450px) */
 /* ------------------------------------------- */
 
@@ -267,7 +336,9 @@
 
   /* --- BEZÁRÁS GOMB --- */
   .modal-close {
-    top: 8px;
+    /* 🛠 JAVÍTÁS: Position beállítása ABSOLUTE-ra */
+    position: absolute;
+    top: 20px;
     right: 10px;
     font-size: 2rem;
   }

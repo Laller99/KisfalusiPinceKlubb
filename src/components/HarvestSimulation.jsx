@@ -29,14 +29,14 @@ const stepDescriptions = {
     description:
       "A dézsában a szőlőszemeket összetapodjuk vagy préseljük, hogy kiengedjük a levet - a mustot. Ez a folyamat szabadítja fel a szőlő ízét és aromáit. Régen lábbal taposták, ma géppel préselik.",
     instruction:
-      "Kattints többször a dézsára a szőlő tiprásához! (0/20 kattintás)",
+      "Kattints többször a dézsára a szőlő tiprásához! ({crushClicks}/20 kattintás)", // Dinamikus jelölő
   },
   4: {
     title: "Érlelés hordóban",
     description:
       "A must fahordókban érik, ahol lassan borrá alakul. Az érlelés során a fa átereszti a levegőt, és különleges aromákat ad a bornak. Ez a folyamat hónapokig vagy évekig is tarthat.",
     instruction:
-      "Kattints a hordókra, hogy ellenőrizd az érlelési folyamatot! (0/15 ellenőrzés)",
+      "Kattints a hordókra, hogy ellenőrizd az érlelési folyamatot! ({barrelChecks}/15 ellenőrzés)", // Dinamikus jelölő
   },
   5: {
     title: "Palackozás",
@@ -56,8 +56,7 @@ const HarvestSimulation = () => {
   const [bottledCount, setBottledCount] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
 
-  // Az onDragEnd esemény a Framer Motion-ben a touchmove/touchend eseményeket is kezeli.
-  // Így a handleGrapeToBasket és handleBasketToVat függvények változatlanok maradnak.
+  // A Framer Motion onDragEnd kezeli a touchmove/touchend eseményeket, így azok rendben vannak.
   const handleGrapeToBasket = () => {
     setGrapeInBasket(true);
     setTimeout(() => setCurrentStep(2), 800);
@@ -68,40 +67,54 @@ const HarvestSimulation = () => {
     setTimeout(() => setCurrentStep(3), 800);
   };
 
+  // 🛠 JAVÍTÁS: Korlátozás hozzáadása és stopPropagation biztosítása
   const handleCrushClick = (e) => {
-    // Megelőzzük, hogy az 'onClick' és a 'onTouchStart' kétszer fusson
+    // Mobil böngészők esetén a touchend esemény után a click is elsül.
+    // Az esemény terjedésének megállítása segít.
     if (e) e.stopPropagation();
 
-    if (currentStep === 3) {
-      const newClicks = crushClicks + 1;
-      setCrushClicks(newClicks);
-      if (newClicks >= 20) {
-        setTimeout(() => setCurrentStep(4), 800);
-      }
+    if (currentStep === 3 && crushClicks < 20) {
+      // Mindig az előző állapot alapján növeljük, elkerülve az Race Condition-t
+      setCrushClicks((prevCount) => {
+        const newClicks = prevCount + 1;
+        if (newClicks >= 20) {
+          setTimeout(() => setCurrentStep(4), 800);
+          return 20; // Maximum értékre korlátozás
+        }
+        return newClicks;
+      });
     }
   };
 
+  // 🛠 JAVÍTÁS: Korlátozás hozzáadása
   const handleBarrelCheck = (e) => {
     if (e) e.stopPropagation();
 
-    if (currentStep === 4) {
-      const newChecks = barrelChecks + 1;
-      setBarrelChecks(newChecks);
-      if (newChecks >= 15) {
-        setTimeout(() => setCurrentStep(5), 800);
-      }
+    if (currentStep === 4 && barrelChecks < 15) {
+      setBarrelChecks((prevChecks) => {
+        const newChecks = prevChecks + 1;
+        if (newChecks >= 15) {
+          setTimeout(() => setCurrentStep(5), 800);
+          return 15; // Maximum értékre korlátozás
+        }
+        return newChecks;
+      });
     }
   };
 
+  // 🛠 JAVÍTÁS: Korlátozás hozzáadása
   const handleBottleClick = (bottleIndex, e) => {
     if (e) e.stopPropagation();
 
-    if (currentStep === 5 && bottledCount === bottleIndex) {
-      const newCount = bottledCount + 1;
-      setBottledCount(newCount);
-      if (newCount >= 3) {
-        setTimeout(() => setShowCelebration(true), 500);
-      }
+    if (currentStep === 5 && bottledCount === bottleIndex && bottledCount < 3) {
+      setBottledCount((prevCount) => {
+        const newCount = prevCount + 1;
+        if (newCount >= 3) {
+          setTimeout(() => setShowCelebration(true), 500);
+          return 3; // Maximum értékre korlátozás
+        }
+        return newCount;
+      });
     }
   };
 
@@ -156,6 +169,19 @@ const HarvestSimulation = () => {
     setShowCelebration(false);
   };
 
+  // 🛠 JAVÍTÁS: Az info-panel instruction-text tartalmát külön számoljuk
+  const renderInstructionText = () => {
+    const instruction = stepDescriptions[currentStep].instruction;
+    switch (currentStep) {
+      case 3:
+        return instruction.replace(/\{crushClicks\}/, crushClicks);
+      case 4:
+        return instruction.replace(/\{barrelChecks\}/, barrelChecks);
+      default:
+        return instruction;
+    }
+  };
+
   return (
     <div className="harvest-simulation">
       {/* Background Pattern */}
@@ -181,19 +207,7 @@ const HarvestSimulation = () => {
                 {stepDescriptions[currentStep].description}
               </p>
               <div className="instruction-box">
-                <p className="instruction-text">
-                  {currentStep === 3
-                    ? stepDescriptions[currentStep].instruction.replace(
-                        "(0/20 kattintás)",
-                        `(${crushClicks}/20 kattintás)`
-                      )
-                    : currentStep === 4
-                    ? stepDescriptions[currentStep].instruction.replace(
-                        "(0/15 ellenőrzés)",
-                        `(${barrelChecks}/15 ellenőrzés)`
-                      )
-                    : stepDescriptions[currentStep].instruction}
-                </p>
+                <p className="instruction-text">{renderInstructionText()}</p>
               </div>
             </div>
           </div>
@@ -369,7 +383,7 @@ const HarvestSimulation = () => {
               currentStep === 3 ? "clickable crush-active" : "disabled"
             }`}
             onClick={handleCrushClick}
-            // 👈 JAVÍTÁS: Touch esemény hozzáadása mobilon
+            // 🛠 JAVÍTÁS: Touch esemény hozzáadása
             onTouchStart={handleCrushClick}
             whileHover={currentStep === 3 ? { scale: 1.05 } : {}}
             whileTap={currentStep === 3 ? { scale: 0.95 } : {}}
@@ -427,7 +441,7 @@ const HarvestSimulation = () => {
               currentStep === 4 ? "clickable barrel-active" : "disabled"
             }`}
             onClick={handleBarrelCheck}
-            // 👈 JAVÍTÁS: Touch esemény hozzáadása mobilon
+            // 🛠 JAVÍTÁS: Touch esemény hozzáadása
             onTouchStart={handleBarrelCheck}
             whileHover={currentStep === 4 ? { scale: 1.05 } : {}}
             whileTap={currentStep === 4 ? { scale: 0.95 } : {}}
@@ -488,8 +502,9 @@ const HarvestSimulation = () => {
                   initial={{ y: -50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.2 }}
-                  onClick={(e) => handleBottleClick(i, e)} // 👈 Módosítva: Esemény továbbítása
-                  onTouchStart={(e) => handleBottleClick(i, e)} // 👈 JAVÍTÁS: Touch esemény hozzáadása
+                  onClick={(e) => handleBottleClick(i, e)}
+                  // 🛠 JAVÍTÁS: Touch esemény hozzáadása
+                  onTouchStart={(e) => handleBottleClick(i, e)}
                   className={`bottle-item ${
                     currentStep === 5 && bottledCount === i ? "clickable" : ""
                   }`}

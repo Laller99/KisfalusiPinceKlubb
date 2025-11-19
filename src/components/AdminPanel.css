@@ -20,6 +20,15 @@
     backdrop-filter: blur(8px); 
 }
 
+/* Amikor a modal nyitva van, ez az osztály kerül a <body> elemre */
+body.modal-open {
+  /* Megakadályozza a görgetősáv megjelenését és a görgetést */
+  overflow: hidden; 
+  
+  /* Ez a kiegészítő beállítás segít mobil eszközökön is */
+  position: fixed; 
+  width: 100%;
+}
 /* ------------------------------------------- */
 /* 2. ADMIN PANEL KÁRTYA ÉS FŐ ELEMEK */
 /* ------------------------------------------- */

@@ -53,8 +53,20 @@ const WineListCard = ({ wine, onAddToCart }) => {
   );
 };
 
-// --- 2. MODAL KOMPONENS ---
+// --- 2. MODAL KOMPONENS (JAVÍTVA: Görgetés letiltása) ---
 const Modal = ({ isOpen, onClose, children }) => {
+  // 🔑 ÚJ LOGIKA: Görgetés letiltása a modal megjelenésekor
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("modal-open");
+    }
+
+    // Tisztító függvény: Ez fut le, mielőtt a komponens eltűnik, vagy az isOpen változik.
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [isOpen]); // Csak akkor fut le, ha az 'isOpen' prop megváltozik
+
   if (!isOpen) return null;
 
   return (

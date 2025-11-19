@@ -18,6 +18,15 @@
   /* Kiemeltebb elmosás */
   backdrop-filter: blur(8px);
 }
+/* Amikor a modal nyitva van, ez az osztály kerül a <body> elemre */
+body.modal-open {
+  /* Megakadályozza a görgetősáv megjelenését és a görgetést */
+  overflow: hidden;
+
+  /* Ez a kiegészítő beállítás segít mobil eszközökön is */
+  position: fixed;
+  width: 100%;
+}
 
 /* ------------------------------------------- */
 /* 2. A PROFIL KÁRTYA (ELEGÁNS KIEMELÉS) */
@@ -396,7 +405,7 @@
   color: #333;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
 }
-    /* ########################################################################## */
+/* ########################################################################## */
 /* --- MEDIA QUERIES (RESZPONZIVITÁS) --- */
 /* ########################################################################## */
 
@@ -422,7 +431,7 @@
     /* Az egész táblázatot megengedjük, hogy scrollozható legyen, ha szükséges */
     display: block;
     overflow-x: auto;
-    white-space: nowrap; 
+    white-space: nowrap;
     margin: 5px;
   }
 
@@ -479,7 +488,7 @@
   /* --- RENDELÉSEK TÁBLÁZATA (Stacking / Stacking helyett Scrollozás) --- */
   /* Ha a tartalom nem fér el, hagyjuk a horizontális scrollozást, de csökkentünk mindent */
   .profile-card table {
-    width: 100%; 
+    width: 100%;
   }
 
   .profile-card table thead th,
@@ -487,12 +496,13 @@
     padding: 10px 8px; /* Még kisebb padding */
     font-size: 0.8em; /* Még kisebb betűméret */
   }
-  
+
   /* Egyedi igazítások finomítása mobilra */
-  .profile-card table tbody tr td:nth-child(3) { /* Összeg oszlop */
-      text-align: left; /* Jobb, ha balra igazítjuk a többi mellé szűk helyen */
+  .profile-card table tbody tr td:nth-child(3) {
+    /* Összeg oszlop */
+    text-align: left; /* Jobb, ha balra igazítjuk a többi mellé szűk helyen */
   }
-  
+
   /* --- SZERKESZTŐ FORMOK --- */
   .edit-form,
   .password-form {

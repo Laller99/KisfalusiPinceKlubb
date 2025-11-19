@@ -106,7 +106,10 @@ const UserRatingSection = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [submitMessage, setSubmitMessage] = useState({ text: "", type: "" });
 
-  const currentRating = hoverRating || rating;
+  // Megállapítja a ténylegesen kijelzendő értéket:
+  // Ha az egér fölötte van (hover), azt mutatja, ha nem, a kiválasztott rating-et.
+  // 🛠 JAVÍTÁS: A logika megbízható, de a mobil érintésekhez is hozzáadjuk a setRating-et.
+  const currentDisplayRating = hoverRating || rating;
 
   const handleSubmit = () => {
     if (rating === 0) {
@@ -128,6 +131,11 @@ const UserRatingSection = () => {
     }, 3000);
   };
 
+  const handleStarClick = (ratingValue) => {
+    setRating(ratingValue);
+    setHoverRating(0); // Kattintás után a hover értéket nullázzuk.
+  };
+
   return (
     <div className="user-rating-section">
       <h2 className="section-title">Oszd meg a véleményed!</h2>
@@ -138,13 +146,16 @@ const UserRatingSection = () => {
       <div className="star-selection-container">
         {Array.from({ length: totalStars }, (_, index) => {
           const ratingValue = index + 1;
-          const starClassName = ratingValue <= currentRating ? "active" : "";
+          const starClassName =
+            ratingValue <= currentDisplayRating ? "active" : "";
 
           return (
             <span
               key={index}
               className={`star-selection-icon ${starClassName}`}
-              onClick={() => setRating(ratingValue)}
+              onClick={() => handleStarClick(ratingValue)}
+              // 🛠 JAVÍTÁS: Touch esemény hozzáadása mobilon való pontos működéshez.
+              onTouchStart={() => handleStarClick(ratingValue)}
               onMouseEnter={() => setHoverRating(ratingValue)}
               onMouseLeave={() => setHoverRating(0)}
               aria-label={`Értékelés: ${ratingValue} csillag`}
@@ -158,7 +169,7 @@ const UserRatingSection = () => {
       <p className="current-rating-display">
         Aktuális értékelés:{" "}
         <span className="rating-value">
-          {currentRating}/{totalStars}
+          {rating}/{totalStars}
         </span>
       </p>
 

@@ -8,6 +8,7 @@ const sgMail = require("@sendgrid/mail");
 const { MongoClient, ObjectId } = require("mongodb");
 const paypal = require("paypal-rest-sdk");
 const mongoose = require("mongoose");
+const User = require("./models/User");
 const Product = require("./models/Product");
 const { authMiddleware: protect } = require("./middleware/authMiddleware");
 // ---------------------------------------------------------------------
@@ -50,13 +51,21 @@ async function connectToMongo() {
 connectToMongo();
 
 // Mongoose kapcsolat beállítása a User, Product, Order modellekhez
+
 mongoose
   .connect(MONGO_URI)
-  .then(() =>
-    console.log("✅ Sikeresen csatlakoztunk a Mongoose-hoz! (Autentikáció)")
-  )
+  .then(() => {
+    console.log("✅ Sikeresen csatlakoztunk a Mongoose-hoz! (Autentikáció)");
+    // 🚨 INDEX ÉPÍTÉS KÉNYSZERÍTÉSE:
+    User.createIndexes()
+      .then(() =>
+        console.log(
+          "✅ User indexek (unique) sikeresen létrehozva/ellenőrizve."
+        )
+      )
+      .catch((err) => console.error("❌ Hiba az indexek létrehozásakor:", err));
+  })
   .catch((err) => console.error("❌ Hiba a Mongoose csatlakozáskor:", err));
-
 // --- Nodemailer Transporter ---
 sgMail.setApiKey(SENDGRID_API_KEY);
 console.log("✅ SendGrid API kulcs beállítva.");
@@ -409,9 +418,17 @@ app.get("/api/paypal/execute", async (req, res, next) => {
 // ---------------------------------------------------------------------
 // --- GLOBÁLIS HIBAKEZELŐ (4 paraméteres middleware) ---
 // ---------------------------------------------------------------------
-
 app.use((err, req, res, next) => {
   console.error("🚨 GLOBÁLIS HIBAKEZELŐ ELKAPOTT HIBA:", err.stack || err);
+
+  // 🔑 JAVÍTÁS: Kezeljük a MongoDB/Mongoose duplikációs hibát (E-mail cím már létezik).
+  if (err.code === 11000) {
+    // 409 Conflict - jelzi, hogy az erőforrás (e-mail) már létezik
+    return res.status(409).json({
+      message: "Ez az e-mail cím már regisztrálva van!",
+      error: "Duplicate key error: E-mail cím már használatban.",
+    });
+  }
 
   if (res.headersSent) {
     return next(err);
@@ -423,7 +440,6 @@ app.use((err, req, res, next) => {
     error: err.message || "Ismeretlen hiba.",
   });
 });
-
 // ---------------------------------------------------------------------
 // --- Szerver Indítása ---
 // ---------------------------------------------------------------------
