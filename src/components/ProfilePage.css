@@ -178,11 +178,12 @@ body.modal-open {
   width: 100%;
   border-collapse: collapse;
   margin-top: 25px;
-  /* Puha árnyék */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-radius: 10px;
-  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 20px;
 }
 
 /* Táblázat fejrész (Header) */
@@ -489,6 +490,8 @@ body.modal-open {
   /* Ha a tartalom nem fér el, hagyjuk a horizontális scrollozást, de csökkentünk mindent */
   .profile-card table {
     width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
   }
 
   .profile-card table thead th,
