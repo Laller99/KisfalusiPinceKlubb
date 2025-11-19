@@ -13,6 +13,17 @@ export default function UserOrdersPage({ onClose }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 🔑 ÚJ LOGIKA: Görgetés letiltása a modal megjelenésekor
+  useEffect(() => {
+    // A modal megjelenésének feltétele a komponens mountolása.
+    document.body.classList.add("modal-open");
+
+    // Tisztító függvény: Ez fut le a komponens unmountolásakor (bezáráskor)
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, []); // Üres függőségi tömb: csak mountkor és unmountkor fut le
+
   useEffect(() => {
     async function fetchOrders() {
       if (!user) return;

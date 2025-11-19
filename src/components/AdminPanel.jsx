@@ -330,7 +330,7 @@ export default function AdminPanel({ onClose }) {
             className={view === "orders" ? "active" : ""}
             onClick={() => setView("orders")}
           >
-            Rendelések
+            Rendelések ({orders.length})
           </button>
           {/* 🔑 ÚJ NAVIGÁCIÓS GOMB */}
           <button
