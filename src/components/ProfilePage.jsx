@@ -22,6 +22,18 @@ export default function ProfilePage({ onClose, onViewOrders }) {
     oldPassword: "",
     newPassword: "",
   });
+
+  // 🔑 ÚJ LOGIKA: Görgetés letiltása a modal megjelenésekor
+  useEffect(() => {
+    // A modal megjelenésének feltétele a komponens mountolása.
+    document.body.classList.add("modal-open");
+
+    // Tisztító függvény: Ez fut le a komponens unmountolásakor (bezáráskor)
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, []); // Üres függőségi tömb: csak mountkor és unmountkor fut le
+
   // Profil adatainak lekérése
   const fetchProfile = async () => {
     if (!user) return;
