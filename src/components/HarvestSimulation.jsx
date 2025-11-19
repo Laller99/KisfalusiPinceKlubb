@@ -67,37 +67,28 @@ const HarvestSimulation = () => {
     setTimeout(() => setCurrentStep(3), 800);
   };
 
-  // 🛠 JAVÍTÁS: Visszaállítottuk a clicket és hozzáadtuk az e.preventDefault-et a dupla események elkerüléséhez
-  const handleCrushClick = (e) => {
-    // ❗️ JAVÍTÁS: Megakadályozza, hogy mobilon a touch után click is elsüljön.
-    if (e && e.type === "touchstart") e.preventDefault();
-    if (e) e.stopPropagation();
-
+  // JAVÍTÁS: CSAK onClick-et kezelünk.
+  const handleCrushClick = () => {
     if (currentStep === 3 && crushClicks < 20) {
-      // Mindig az előző állapot alapján növeljük, elkerülve az Race Condition-t
       setCrushClicks((prevCount) => {
         const newClicks = prevCount + 1;
         if (newClicks >= 20) {
           setTimeout(() => setCurrentStep(4), 800);
-          return 20; // Maximum értékre korlátozás
+          return 20;
         }
         return newClicks;
       });
     }
   };
 
-  // 🛠 JAVÍTÁS: Visszaállítottuk a clicket és hozzáadtuk az e.preventDefault-et
-  const handleBarrelCheck = (e) => {
-    // ❗️ JAVÍTÁS: Megakadályozza, hogy mobilon a touch után click is elsüljön.
-    if (e && e.type === "touchstart") e.preventDefault();
-    if (e) e.stopPropagation();
-
+  // JAVÍTÁS: CSAK onClick-et kezelünk.
+  const handleBarrelCheck = () => {
     if (currentStep === 4 && barrelChecks < 15) {
       setBarrelChecks((prevChecks) => {
         const newChecks = prevChecks + 1;
         if (newChecks >= 15) {
           setTimeout(() => setCurrentStep(5), 800);
-          return 15; // Maximum értékre korlátozás
+          return 15;
         }
         return newChecks;
       });
